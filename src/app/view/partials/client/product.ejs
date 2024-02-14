@@ -1,0 +1,21 @@
+<div class="brand-bg">
+    <div class="container-fluid" style="padding-left: 3rem; padding-right: 3rem">
+        <div class="row">
+            <% const brand_list = [1, 2, 3, 4, 5, 6, 7]; for (let brand in brand_list) { %>
+                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 margin">
+                    <a href="/product/detail/<%= brand %>">
+                        <div class="brand_box">
+                            <img src="images/1.png" alt="img"/>
+                            <h3>$<strong class="red">100</strong></h3>
+                            <span>Mobile Phone</span>
+                            <i><img src="images/star.png"/></i>
+                            <i><img src="images/star.png"/></i>
+                            <i><img src="images/star.png"/></i>
+                            <i><img src="images/star.png"/></i>
+                        </div>
+                    </a>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</div>
