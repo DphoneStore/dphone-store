@@ -1,0 +1,79 @@
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-sm-12 col-xl-12">
+            <div class="container-fluid pt-4 px-4 bg-secondary rounded"
+                 style="position:sticky; z-index:1000; top: 64px">
+                <div class="row g-4">
+                    <div class="col-sm-9 col-xl-9">
+                        <h6>Brand Table</h6>
+                    </div>
+                    <div class="col-sm-2 col-xl-2" style="text-align: end;margin: 1rem;">
+                        <a href="brand/new">
+                            <button class="btn btn-success"><i class="fa-solid fa-plus me-2"></i>New</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-secondary rounded h-100 p-4 mt-3">
+                <% if(data.brand_list.length > 0 ){ %>
+
+                    <table class="table table-hover" style="text-align: center;">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Brand Name</th>
+                            <th scope="col">Logo</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <%- include('../../partials/admin/brand-row', {brand_list: data.brand_list}) %>
+                        </tbody>
+                    </table>
+                <% } else { %>
+                    <%- include('../../partials/admin/blank', {content: 'There are no brands yet!, click on new button to add a new brand'}) %>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+<%- contentFor('script') %>
+<script>
+    $('.btn-edit-brand').click(function (){
+        const brand_id = $(this).data('brand-id')
+        location.href = `/admin/brand/edit/${brand_id}`
+    })
+
+    let brand_id_delete = 0
+    $('.btn-delete-brand').click(function (){
+        brand_id_delete = $(this).data('brand-id')
+        $('#btn_open_confirm_modal').click()
+    })
+
+    $('#btn_ok_delete').click(function (){
+        $('#btn_close_confirm_modal').click()
+        $.ajax({
+            url: '/admin/brand/delete',
+            type: 'delete',
+            data: {brand_id:brand_id_delete},
+            dataType: 'json',
+            beforeSend: LoadingWrapper(true),
+            success: (data)=>{
+                if(data.code === 203){
+                    setTimeout(()=>{
+                        location.href = '/admin/brand'
+                    },1000)
+                } else {
+                    alert('something went wrong!')
+                    LoadingWrapper(false)
+                }
+            },
+            error: (error)=>{
+                LoadingWrapper(false)
+                alert(error)
+            }
+        })
+    })
+</script>
+
+<%- contentFor('style') %>

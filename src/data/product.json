@@ -1,0 +1,57 @@
+[
+  {
+    "name": "product 1",
+    "brand": {
+      "name": "apple"
+    },
+    "images": ["demo.jpg", "demo.jpg", "demo.jpg","demo.jpg"],
+    "price": 123,
+    "stock": 150,
+    "rating": 1,
+    "release_date": "20/21/2022"
+  },
+  {
+    "name": "product 2",
+    "brand": {
+      "name": "samsung"
+    },
+    "images": ["demo.jpg", "demo.jpg", "demo.jpg","demo.jpg"],
+    "price": 321,
+    "stock": 11,
+    "rating": 4,
+    "release_date": "20/21/2022"
+  },
+  {
+    "name": "product 3",
+    "brand": {
+      "name": "xiaomi"
+    },
+    "images": ["demo.jpg", "demo.jpg", "demo.jpg","demo.jpg"],
+    "price": 222,
+    "stock": 20,
+    "rating": 4,
+    "release_date": "20/21/2022"
+  },
+  {
+    "name": "product 4",
+    "brand": {
+      "name": "nokia"
+    },
+    "images": ["demo.jpg", "demo.jpg", "demo.jpg","demo.jpg"],
+    "price": 33,
+    "stock": 11,
+    "rating": 5,
+    "release_date": "20/21/2022"
+  },
+  {
+    "name": "product 5",
+    "brand": {
+      "name": "apple"
+    },
+    "images": ["demo.jpg", "demo.jpg", "demo.jpg","demo.jpg"],
+    "price": 222,
+    "stock": 150,
+    "rating": 5,
+    "release_date": "20/21/2022"
+  }
+]

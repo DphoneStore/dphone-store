@@ -1,0 +1,66 @@
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-sm-12 col-xl-12">
+            <div class="container-fluid pt-4 px-4 bg-secondary rounded"
+                 style="position:sticky; z-index:1000; top: 64px">
+                <div class="row g-4">
+                    <div class="col-sm-9 col-xl-9">
+                        <h6>Product Table</h6>
+                    </div>
+                    <div class="col-sm-2 col-xl-2" style="text-align: end;margin: 1rem;">
+                        <a href="product/new">
+                            <button class="btn btn-success"><i class="fa-solid fa-plus me-2"></i>New</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-secondary rounded h-100 p-4 mt-3">
+                <% if(data.product_list.length > 0 ){ %>
+                    <%- include('../../partials/admin/product-table', {product_list: data.product_list}) %>
+                <% } else { %>
+                    <%- include('../../partials/admin/blank', {content: 'There are no product yet!, click on new button to add a new product'}) %>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+<%- contentFor('script') %>
+<script>
+    $('.btn-edit-product').click(function (){
+        const product_id = $(this).data('product-id')
+        location.href = `/admin/product/edit/${product_id}`
+    })
+
+    $('.btn-see-product-detail').click()
+
+    let delete_product_id = 0
+    $('.btn-delete-product').click(function (){
+        delete_product_id = $(this).data('product-id')
+        $('#btn_open_confirm_modal').click()
+    })
+    $('#btn_ok_delete').click(function (){
+        $('#btn_close_confirm_modal').click()
+        $.ajax({
+            url: '/admin/product/delete',
+            type: 'DELETE',
+            data: {product_id: delete_product_id},
+            dataType: 'json',
+            beforeSend: LoadingWrapper(true),
+            success: function (response){
+                if(response.code === 203 || response.code === 404){
+                    location.href = '/admin/product'
+                } else {
+                    alert('Fail delete product!')
+                }
+                LoadingWrapper(false)
+            },
+            error: function (error){
+                LoadingWrapper(false)
+                alert('Something went wrong!')
+            }
+        })
+    })
+</script>
+
+<%- contentFor('style') %>
+<link href="/assets/css/discount-price.css" rel="stylesheet" type="text/css"/>

@@ -1,0 +1,86 @@
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-sm-12 col-xl-12"
+             style="position:sticky; z-index:1000; top: 64px">
+            <div class="d-flex p-4 bg-secondary rounded justify-content-between align-items-end">
+                <a href="/admin/brand">
+                    <button class="btn btn-primary"><i class="fas fa-chevron-left"></i></button>
+                </a>
+                <h5>Edit Brand</h5>
+                <button class="btn btn-success" id="btn_update_brand"><i class="fa-solid fa-check me-2"></i>Update</button>
+            </div>
+        </div>
+        <div class="col-sm-12 col-xl-12">
+            <div class="bg-secondary rounded h-100 p-4">
+                <form id="brand_form" enctype="multipart/form-data">
+                    <input type="text" hidden name="brand_id" value="<%= data.brand._id %>">
+                    <label for="brand_name" class="col-form-label">Name</label>
+                    <input type="text" class="form-control" id="brand_name" name="name" required value="<%= data.brand.name %>">
+                    <label for="brand_logo" class="col-form-label mt-3">Logo</label>
+                    <div class="dropzone" style="width: 30%;">
+                        <img id="logo_preview" class="mt-3" src="/assets/media/logo-brand/<%= data.brand.logo.name %>" width="100%" style="display: block;">
+                    </div>
+                    <input type="file" name="brand_logo" hidden id="input_brand_logo" onchange="previewImage()" required>
+                    <button class="btn btn-primary mt-3" type="button" id="btn_choose_logo">Upload image</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<%- contentFor('script') %>
+<script>
+    $('#brand_form').submit(function (e){
+        e.preventDefault()
+        const data = new FormData(this)
+        $.ajax({
+            url: '/admin/brand/update',
+            type: 'post',
+            data: data,
+            cache:false,
+            contentType: false,
+            processData: false,
+            beforeSend: LoadingWrapper(true),
+            success: (data)=>{
+                console.log(data)
+               if(data.code === 202){
+                   setTimeout(()=>{
+                       location.href = '/admin/brand'
+                   },1000)
+               } else {
+                   alert('something went wrong!')
+                   LoadingWrapper(false)
+               }
+            },
+            error: (error)=>{
+                console.log(error)
+            }
+        })
+    });
+    $('#btn_update_brand').click(function (){
+        $('#brand_form').submit();
+    })
+    $('#btn_choose_logo').click(function (){
+        $('#input_brand_logo').click()
+    })
+
+    function previewImage() {
+        const input = document.getElementById('input_brand_logo');
+        const preview = document.getElementById('logo_preview');
+
+        const file = input.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            preview.src = '/assets/media/logo-brand/<%= data.brand.logo.name %>';
+        }
+    }
+</script>
+<%- contentFor('style') %>
+<link href="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone.css" rel="stylesheet" type="text/css" />

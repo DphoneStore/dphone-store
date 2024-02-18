@@ -11,7 +11,7 @@ const ClientController = {
         res.render(
             'client/home',
             {
-                layout: 'layout/customer-layout',
+                layout: 'layout/client-layout',
                 page_info,
                 data
             }
@@ -29,7 +29,7 @@ const ClientController = {
         res.render(
             'client/brand',
             {
-                layout: 'layout/customer-layout',
+                layout: 'layout/client-layout',
                 page_info,
                 data
             }

@@ -1,0 +1,20 @@
+<% brand_list.map((brand, index) => { %>
+    <tr>
+        <th scope="row"><%= index + 1 %></th>
+        <td><%= brand.name %></td>
+        <td><img src="/assets/media/logo-brand/<%= brand.logo.name %>" width="250px" alt=""></td>
+        <td style="vertical-align: middle;">
+            <div class="btn-group-vertical" role="group">
+                <button type="button" class="btn btn-warning btn-edit-brand" data-brand-id="<%= brand._id %>">
+                    <i class="fa-solid fa-pen  me-2"></i>
+                    Edit
+                </button>
+                <button type="button" class="btn btn-primary btn-delete-brand" data-brand-id="<%= brand._id %>">
+                    <i class="fa-solid fa-trash  me-2"></i>
+                    Delete
+                </button>
+            </div>
+        </td>
+    </tr>
+<% }) %>
+

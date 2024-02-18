@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login</title>
+</head>
+<body>
+<form id="login_form">
+    <input type="text" name="username">
+    <button type="submit">Login</button>
+</form>
+</body>
+</html>
+<script src="/client/js/jquery.min.js"></script>
+<script>
+    $('#login_form').submit(function (e){
+        console.log('submit')
+        e.preventDefault()
+        const form_data = new FormData(this)
+        $.ajax({
+            url: "/login",
+            type: "post",
+            data: form_data,
+            processData: false,
+            contentType: false,
+            success: function (data){
+                console.log(data)
+            },
+            error: function (error){
+                console.log(error)
+            }
+        })
+    })
+</script>

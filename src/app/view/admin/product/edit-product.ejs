@@ -1,0 +1,280 @@
+<div class="container-fluid pt-4 px-4">
+    <form id="product_form" method="post" enctype="multipart/form-data">
+        <input type="text" hidden value="<%= data.product._id %>" name="product_id">
+        <div class="row g-4">
+            <div class="col-sm-12 col-xl-12"
+                 style="position:sticky; z-index:1000; top: 64px">
+                <div class="d-flex p-4 bg-secondary rounded justify-content-between align-items-end">
+                    <a href="/admin/product">
+                        <button type="button" class="btn btn-primary"><i class="fas fa-chevron-left"></i></button>
+                    </a>
+                    <h5>Edit Product</h5>
+                    <button class="btn btn-success" id="btn_update_brand">
+                        <i class="fa-solid fa-check me-2"></i>
+                        Update
+                    </button>
+                </div>
+            </div>
+            <div class="col-sm-12 col-xl-12">
+                <div class="bg-secondary rounded h-100 p-4">
+                    <nav>
+                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#nav-basic-info" type="button" role="tab">
+                                Basic Information
+                            </button>
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-screen" type="button" role="tab">
+                                Screen
+                            </button>
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-camera" type="button" role="tab">
+                                Camera
+                            </button>
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-processor-graphics" type="button" role="tab">
+                                Processor & Graphics
+                            </button>
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-ram-storage" type="button" role="tab">
+                                RAM & Storage
+                            </button>
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-battery-charging" type="button" role="tab">
+                                Battery & Charging Technology
+                            </button>
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-communicate-connect" type="button" role="tab">
+                                Communicate & Connect
+                            </button>
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-design-weight" type="button" role="tab">
+                                Design & Weight
+                            </button>
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-utilities" type="button" role="tab">
+                                Other Utilities
+                            </button>
+                        </div>
+                    </nav>
+                    <div class="tab-content pt-3" id="nav-tabContent">
+                        <div class="tab-pane fade active show" id="nav-basic-info" role="tabpanel">
+                            <i class="fa-solid fa-calendar-days me-2 text-white"></i>
+                            <label for="release_date" class="col-form-label">Release
+                                Date</label>
+                            <input value="<%= data.product.release_date %>" type="date" class="form-control" id="release_date" name="release_date" required>
+                            <i class="fa-brands fa-product-hunt me-2 text-white"></i>
+                            <label for="name" class="col-form-label mt-2">Name</label>
+                            <input value="<%= data.product.name %>" type="text" class="form-control" id="name" name="name" required>
+                            <i class="fa-brands fa-servicestack me-2 text-white"></i>
+                            <label for="brand" class="col-form-label mt-2">Brand</label>
+                            <select class="form-select">
+                                <% data.brand_list.map((brand) => { %>
+                                    <option value="<%= brand._id %>" <%= data.product.brand.toString() == brand._id.toString() ? "selected" : ""%> ><%= brand.name %></option>
+                                <% }) %>
+                            </select>
+                            <i class="fa-solid fa-dollar-sign me-2" style="color: green"></i>
+                            <label for="price" class="col-form-label mt-2">Price</label>
+                            <input value="<%= data.product.price %>" type="number" class="form-control" id="price" name="price" required>
+                            <i class="fa-brands fa-dropbox me-2 text-white"></i>
+                            <label for="stock" class="col-form-label mt-2">Stock</label>
+                            <input value="<%= data.product.stock %>" type="number" class="form-control" id="stock" name="stock" required>
+                            <i class="fa-solid fa-tag me-2 text-white"></i>
+                            <label for="discount" class="col-form-label mt-2">Discount</label>
+                            <div class="d-flex justify-content-between align-items-center" style="height: 2.5rem;">
+                                <input value="<%= data.product.discount %>" type="number" class="form-control" id="discount" name="discount" required>
+                                <input <%= data.product.is_discount ? 'checked' : ''%> type="checkbox" role="switch" id="is_discount" style="--s:20px">
+                            </div>
+                            <i class="fa-solid fa-image me-2 text-white"></i>
+                            <label for="discount" class="col-form-label mt-2">Images</label>
+                            <div class="dropzone" id="my-dropzone"></div>
+                        </div>
+                        <div class="tab-pane fade" id="nav-screen" role="tabpanel"
+                             aria-labelledby="nav-profile-tab">
+                            <i class="fa-solid fa-up-right-and-down-left-from-center me-2 text-white"></i>
+                            <label for="screen_size" class="col-form-label">Screen Size</label>
+                            <input value="<%= data.product.screen.screen_size %>" type="text" class="form-control" id="screen_size" name="screen_size" required>
+                            <i class="fa-solid fa-shapes me-2 text-white"></i>
+                            <label for="screen_tech" class="col-form-label mt-2">Screen Technology</label>
+                            <input value="<%= data.product.screen.screen_tech %>" type="text" class="form-control" id="screen_tech" name="screen_tech" required>
+                            <i class="fa-solid fa-sliders me-2 text-white"></i>
+                            <label for="screen_resolution" class="col-form-label mt-2">Screen Resolution</label>
+                            <input value="<%= data.product.screen.screen_resolution %>" type="text" class="form-control" id="screen_resolution" name="screen_resolution"
+                                   required>
+                            <i class="fa-solid fa-expand me-2 text-white"></i>
+                            <label for="scan_frequency" class="col-form-label mt-2">Scan frequency</label>
+                            <input value="<%= data.product.screen.scan_frequency %>" type="text" class="form-control" id="scan_frequency" name="scan_frequency" required>
+                            <i class="fa-solid fa-grip me-2 text-white"></i>
+                            <label for="screen_type" class="col-form-label mt-2">Screen type</label>
+                            <input value="<%= data.product.screen.screen_type %>" type="text" class="form-control" id="screen_type" name="screen_type" required>
+                        </div>
+                        <div class="tab-pane fade" id="nav-camera" role="tabpanel">
+                            <h6 class="mb-4">Back</h6>
+                            <i class="fa-solid fa-camera me-2 text-white"></i>
+                            <label for="back_camera" class="col-form-label mt-2">Back Camera</label>
+                            <input value="<%= data.product.camera.back_camera %>" type="text" class="form-control" id="back_camera" name="back_camera" required>
+                            <i class="fa-solid fa-video me-2 text-white"></i>
+                            <label for="back_video" class="col-form-label mt-2">Video</label>
+                            <input value="<%= data.product.camera.back_video %>" type="text" class="form-control" id="back_video" name="back_video" required>
+                            <hr>
+                            <h6 class="mb-4">Front</h6>
+                            <i class="fa-solid fa-camera me-2 text-white"></i>
+                            <label for="front_camera" class="col-form-label mt-2">Front Camera</label>
+                            <input value="<%= data.product.camera.front_camera %>" type="text" class="form-control" id="front_camera" name="front_camera" required>
+                            <i class="fa-solid fa-video me-2 text-white"></i>
+                            <label for="front_video" class="col-form-label mt-2">Video</label>
+                            <input value="<%= data.product.camera.front_video %>" type="text" class="form-control" id="front_video" name="front_video" required>
+                        </div>
+                        <div class="tab-pane fade" id="nav-processor-graphics" role="tabpanel">
+                            <i class="fa-solid fa-microchip me-2 text-white"></i>
+                            <label for="chipset" class="col-form-label mt-2">Chipset</label>
+                            <input value="<%= data.product.processor_graphics.chipset %>" type="text" class="form-control" id="chipset" name="chipset" required>
+                            <i class="fa-solid fa-microchip me-2 text-white"></i>
+                            <label for="cpu" class="col-form-label mt-2">CPU</label>
+                            <input value="<%= data.product.processor_graphics.cpu %>" type="text" class="form-control" id="cpu" name="cpu" required>
+                            <i class="fa-solid fa-microchip me-2 text-white"></i>
+                            <label for="gpu" class="col-form-label mt-2">GPU</label>
+                            <input value="<%= data.product.processor_graphics.gpu %>" type="text" class="form-control" id="gpu" name="gpu" required>
+                        </div>
+                        <div class="tab-pane fade" id="nav-ram-storage" role="tabpanel">
+                            <i class="fa-solid fa-memory me-2 text-white"></i>
+                            <label for="ram" class="col-form-label mt-2">RAM Capacity</label>
+                            <input value="<%= data.product.ram_storage.ram %>" type="text" class="form-control" id="ram" name="ram" required>
+                            <i class="fa-solid fa-database me-2 text-white"></i>
+                            <label for="internal_memory" class="col-form-label mt-2">Internal Memory</label>
+                            <input value="<%= data.product.ram_storage.internal_memory %>" type="text" class="form-control" id="internal_memory" name="internal_memory" required>
+                            <i class="fa-solid fa-sd-card me-2 text-white"></i>
+                            <label for="memory_card_slot" class="col-form-label mt-2">Memory Card Slot</label>
+                            <input value="<%= data.product.ram_storage.memory_card_slot %>" type="text" class="form-control" id="memory_card_slot" name="memory_card_slot" required>
+                        </div>
+                        <div class="tab-pane fade" id="nav-battery-charging" role="tabpanel">
+                            <i class="fa-solid fa-battery-three-quarters me-2 text-white"></i>
+                            <label for="pin" class="col-form-label mt-2">Pin</label>
+                            <input value="<%= data.product.battery.pin %>" type="text" class="form-control" id="pin" name="pin" required>
+                            <i class="fa-solid fa-car-battery me-2 text-white"></i>
+                            <label for="charging_tech" class="col-form-label mt-2">Charging Technology</label>
+                            <input value="<%= data.product.battery.charging_tech %>" type="text" class="form-control" id="charging_tech" name="charging_tech" required>
+                            <i class="fa-solid fa-charging-station me-2 text-white"></i>
+                            <label for="charging_port" class="col-form-label mt-2">Charging Port</label>
+                            <input value="<%= data.product.battery.charging_port %>" type="text" class="form-control" id="charging_port" name="charging_port" required>
+                        </div>
+                        <div class="tab-pane fade" id="nav-communicate-connect" role="tabpanel">
+                            <i class="fa-solid fa-sim-card me-2 text-white"></i>
+                            <label for="sim" class="col-form-label mt-2">SIM Card</label>
+                            <input value="<%= data.product.communicate_connect.sim %>" type="text" class="form-control" id="sim" name="sim" required>
+                            <i class="fa-brands fa-windows me-2 text-white"></i>
+                            <label for="operating" class="col-form-label mt-2">Operating system</label>
+                            <input value="<%= data.product.communicate_connect.operating %>" type="text" class="form-control" id="operating" name="operating" required>
+                            <i class="fa-solid fa-kip-sign me-2 text-white"></i>
+                            <label for="infrared" class="col-form-label mt-2">Infrared</label>
+                            <input value="<%= data.product.communicate_connect.infrared %>" type="text" class="form-control" id="infrared" name="infrared" required>
+                            <i class="fa-solid fa-tape me-2 text-white"></i>
+                            <label for="headphone_jack" class="col-form-label mt-2">Headphone jack 3.5</label>
+                            <input value="<%= data.product.communicate_connect.headphone_jack %>" type="text" class="form-control" id="headphone_jack" name="headphone_jack" required>
+                            <i class="fa-solid fa-globe me-2 text-white"></i>
+                            <label for="network_support" class="col-form-label mt-2">Network support</label>
+                            <input value="<%= data.product.communicate_connect.network_support %>" type="text" class="form-control" id="network_support" name="network_support" required>
+                            <i class="fa-brands fa-nfc-directional me-2 text-white"></i>
+                            <label for="nfc_tech" class="col-form-label mt-2">NFC Technology</label>
+                            <input value="<%= data.product.communicate_connect.nfc_tech %>" type="text" class="form-control" id="nfc_tech" name="nfc_tech" required>
+                            <i class="fa-solid fa-wifi me-2 text-white"></i>
+                            <label for="wifi" class="col-form-label mt-2">Wi-Fi</label>
+                            <input value="<%= data.product.communicate_connect.wifi %>" type="text" class="form-control" id="wifi" name="wifi" required>
+                            <i class="fa-brands fa-bluetooth me-2 text-white"></i>
+                            <label for="bluetooth" class="col-form-label mt-2">Bluetooth</label>
+                            <input value="<%= data.product.communicate_connect.bluetooth %>" type="text" class="form-control" id="bluetooth" name="bluetooth" required>
+                            <i class="fa-solid fa-map-location-dot me-2 text-white"></i>
+                            <label for="gps" class="col-form-label mt-2">GPS</label>
+                            <input value="<%= data.product.communicate_connect.gps %>" type="text" class="form-control" id="gps" name="gps" required>
+                        </div>
+                        <div class="tab-pane fade" id="nav-design-weight" role="tabpanel">
+                            <i class="fa-solid fa-up-right-and-down-left-from-center me-2 text-white"></i>
+                            <label for="size" class="col-form-label mt-2">Size</label>
+                            <input value="<%= data.product.design_weight.size %>" type="text" class="form-control" id="size" name="size" required>
+                            <i class="fa-solid fa-scale-balanced me-2 text-white"></i>
+                            <label for="weight" class="col-form-label mt-2">Weight</label>
+                            <input value="<%= data.product.design_weight.weight %>" type="text" class="form-control" id="weight" name="weight" required>
+                            <i class="fa-solid fa-mobile me-2 text-white"></i>
+                            <label for="back_material" class="col-form-label mt-2">Back material</label>
+                            <input value="<%= data.product.design_weight.back_material %>" type="text" class="form-control" id="back_material" name="back_material" required>
+                            <i class="fa-solid fa-crop-simple me-2 text-white"></i>
+                            <label for="frame_material" class="col-form-label mt-2">Frame material</label>
+                            <input value="<%= data.product.design_weight.frame_material %>" type="text" class="form-control" id="frame_material" name="frame_material" required>
+                        </div>
+                        <div class="tab-pane fade" id="nav-utilities" role="tabpanel">
+                            <i class="fa-solid fa-volume-high me-2 text-white"></i>
+                            <label for="audio_tech" class="col-form-label mt-2">Audio technology</label>
+                            <input value="<%= data.product.other.audio_tech %>" type="text" class="form-control" id="audio_tech" name="audio_tech" required>
+                            <i class="fa-solid fa-fingerprint me-2 text-white"></i>
+                            <label for="finger_sensor" class="col-form-label mt-2">Fingerprint Sensor</label>
+                            <input value="<%= data.product.other.finger_sensor %>" type="text" class="form-control" id="finger_sensor" name="finger_sensor" required>
+                            <i class="fa-solid fa-compact-disc me-2 text-white"></i>
+                            <label for="types_of_sensors" class="col-form-label mt-2">Types of sensors</label>
+                            <input value="<%= data.product.other.types_of_sensors %>" type="text" class="form-control" id="types_of_sensors" name="types_of_sensors" required>
+                            <i class="fa-brands fa-react  me-2 text-white"></i>
+                            <label for="special_feature" class="col-form-label mt-2">Special Features</label>
+                            <input value="<%= data.product.other.special_feature %>" type="text" class="form-control" id="special_feature" name="special_feature" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<%- contentFor('script') %>
+<script src="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone-min.js"></script>
+<script>
+    Dropzone.options.myDropzone = {
+        autoQueue: false,
+        addRemoveLinks: true,
+        acceptedFiles: 'image/*',
+        resizeWidth: 400,
+        resizeHeight: 400,
+    };
+
+    let myDropzone = new Dropzone("#my-dropzone", {url: 'upload'});
+    <%- `const images = ${JSON.stringify(data.product.images)}` %>
+
+    images.map((img)=>{
+        myDropzone.emit("addedfile", img);
+        myDropzone.emit("thumbnail", img, `/assets/media/product/${img.filename}`);
+        myDropzone.emit("complete", img);
+    })
+
+    const images_remove = []
+    myDropzone.on('removedfile', (file) => {
+        images_remove.push(file.filename)
+    })
+
+    $('#product_form').submit(function (e) {
+        e.preventDefault()
+        const formData = new FormData(this);
+        formData.append('is_discount', $('#is_discount').is(':checked'))
+        formData.append("images_remove", images_remove);
+        myDropzone.files.forEach(function (file) {
+            formData.append("images", file);
+        });
+        $.ajax({
+            type: "POST",
+            url: "/admin/product/update",
+            data: formData,
+            contentType: false,
+            processData: false,
+            beforeSend: LoadingWrapper(true),
+            success: function (response) {
+                if(response.code === 202){
+                    location.href = '/admin/product'
+                } else {
+                    alert('Fail update product!')
+                }
+                LoadingWrapper(false)
+            },
+            error: function (error) {
+                LoadingWrapper(false)
+                alert('Something went wrong!')
+            }
+        });
+    })
+</script>
+
+<%- contentFor('style') %>
+<link href="/assets/css/switch.css" rel="stylesheet" type="text/css"/>
+<link href="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone.css" rel="stylesheet" type="text/css"/>
+<style>
+    .dz-progress {
+        display: none;
+    }
+    .dz-image img{width: 100%;height: 100%;}
+</style>

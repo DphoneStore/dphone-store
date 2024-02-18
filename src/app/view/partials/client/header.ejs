@@ -1,3 +1,7 @@
+<% function NavActivated(title, activated){
+    return title === activated ? "active" : ""
+} %>
+
 <header>
     <!-- header inner -->
     <div class="header">
@@ -7,7 +11,7 @@
                     <div class="full">
                         <div class="center-desk">
                             <div class="logo">
-                                <a href="index.html"><img src="images/logo.png" alt="#"></a>
+                                <a href="index.html"><img src="/client/images/logo.png" alt="#"></a>
                             </div>
                         </div>
                     </div>
@@ -17,16 +21,16 @@
                         <div class="limit-box">
                             <nav class="main-menu">
                                 <ul class="menu-area-main">
-                                    <li class="active"> <a href="/home">Home</a> </li>
-                                    <li><a href="/brand">Brand</a></li>
-                                    <li><a href="/product">Product</a></li>
+                                    <li class="nav-hover"><a href="/" class="<%= NavActivated("Home", page_info.title) %>">Home</a> </li>
+                                    <li class="nav-hover"><a href="/brand" class="<%= NavActivated("Brand", page_info.title) %>">Brand</a></li>
+                                    <li class="nav-hover"><a href="/product" class="<%= NavActivated("Product", page_info.title) %>">Product</a></li>
                                     <% if(page_info.is_login){ %>
-                                        <li><i class="fas fa-user-circle" style="font-size: 1.5rem"></i></li>
-                                        <li><a href="/logout"><i class="fas fa-sign-out-alt" style="font-size: 1.5rem"></i></a></li>
+                                        <li class="nav-hover"><a href="#"><i class="fas fa-user-circle" style="font-size: 1.5rem"></i></a></li>
+                                        <li class="nav-hover"><a href="/logout"><i class="fas fa-sign-out-alt" style="font-size: 1.5rem"></i></a></li>
                                     <% } else { %>
-                                        <li><a href="#login"><i class="fas fa-sign-in-alt" style="font-size: 1.5rem"></i></a></li>
+                                        <li class="nav-hover"><a href="#login"><i class="fas fa-sign-in-alt" style="font-size: 1.5rem"></i></a></li>
                                     <% } %>
-                                    <li><a href="/cart"><i class="fas fa-cart-plus"   style="font-size: 1.5rem"></i></a></li>
+                                    <li class="nav-hover"><a href="/cart"><i class="fas fa-cart-plus"   style="font-size: 1.5rem"></i></a></li>
                                 </ul>
                             </nav>
                         </div>
@@ -35,9 +39,9 @@
                 <div class="col-md-6 offset-md-6">
                     <div class="location_icon_bottum">
                         <ul>
-                            <li><img src="icon/call.png" />(+71)9876543109</li>
-                            <li><img src="icon/email.png" />demo@gmail.com</li>
-                            <li><img src="icon/loc.png" />Location</li>
+                            <li><img src="/client/icon/call.png" />(+71)9876543109</li>
+                            <li><img src="/client/icon/email.png" />demo@gmail.com</li>
+                            <li><img src="/client/icon/loc.png" />Location</li>
                         </ul>
                     </div>
                 </div>

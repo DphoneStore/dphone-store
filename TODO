@@ -1,3 +1,24 @@
-I. customer UI
-    1. brand
+I. admin UI
+    1. dashboard: done@
+    2. brand: @done
+    3. product:
+
+II. customer UI
+    1. brand: done@
     2. product
+
+II function:
+    1. CRUD brand: @done
+    2. CRUD product
+
+
+
+
+product table
+1. name
+2. img
+3. brand
+4. price
+5. stock
+6. rating
+7. detail button

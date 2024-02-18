@@ -5,6 +5,6 @@ const route = express.Router()
 
 route.get('/', ProductController.ProductPage)
 route.get('/:brand', ProductController.ProductPage)
-route.get('/detail/:slug', ProductController.ProductDetail)
+route.get('/new', ProductController.ProductDetail)
 
 module.exports = route

@@ -11,7 +11,7 @@ const ProductController = {
         res.render(
             'client/product',
             {
-                layout: 'layout/customer-layout',
+                layout: 'layout/client-layout',
                 page_info,
                 data
             }
@@ -29,7 +29,7 @@ const ProductController = {
         res.render(
             'client/product-detail',
             {
-                layout: 'layout/customer-layout',
+                layout: 'layout/client-layout',
                 page_info,
                 data
             }
