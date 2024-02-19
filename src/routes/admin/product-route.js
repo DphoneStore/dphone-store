@@ -10,4 +10,5 @@ route.post('/new', upload(PRODUCT_STORAGE_PATH).array('images'), ProductControll
 route.get('/edit/:id', ProductController.EditProductPage)
 route.post('/update', upload(PRODUCT_STORAGE_PATH).array('images'), ProductController.UpdateProduct)
 route.delete('/delete', ProductController.DeleteProduct)
+route.get('/search/:name', ProductController.SearchProduct)
 module.exports = route

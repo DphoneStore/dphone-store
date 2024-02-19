@@ -1,0 +1,151 @@
+<!-- Sale & Revenue Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-line fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Today Sale</p>
+                    <h6 class="mb-0">$1234</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-bar fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Total Sale</p>
+                    <h6 class="mb-0">$1234</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-area fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Today Revenue</p>
+                    <h6 class="mb-0">$1234</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-pie fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Total Revenue</p>
+                    <h6 class="mb-0">$1234</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Sale & Revenue End -->
+
+<!-- Sales Chart Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-sm-12 col-xl-6">
+            <%- include('./partials/chart', {chart: {name: 'Worldwide Sales', id:'worldwide_sales'} }) %>
+        </div>
+        <div class="col-sm-12 col-xl-6">
+            <%- include('./partials/chart', {chart: {name: 'Salse & Revenue', id:'salse_revenue'} }) %>
+        </div>
+    </div>
+</div>
+
+<!-- config web information -->
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-sm-12 col-xl-6">
+            <div class="bg-secondary rounded h-100 p-4">
+               <%- include('./partials/web-info', {website: data.web_info.website}) %>
+            </div>
+        </div>
+        <div class="col-sm-12 col-xl-6">
+            <div class="bg-secondary rounded h-100 p-4">
+                <%- include('./partials/about', {about: data.web_info.about}) %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- slider -->
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-sm-12 col-xl-12">
+            <div class="bg-secondary text-center rounded p-4">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <h6 class="mb-0">Slider</h6>
+                </div>
+                <form action="/file-upload"
+                      class="dropzone"
+                      id="my-dropzone">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<%- contentFor('script') %>
+<script src="/assets/js/admin/dashboard.js"></script>
+<script src="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone-min.js"></script>
+<script>
+    Dropzone.options.myDropzone = {
+        autoQueue: false,
+        addRemoveLinks: true,
+        acceptedFiles: 'image/*'
+        // Configuration options go here
+    };
+
+
+    let myDropzone = new Dropzone("#my-dropzone");
+    <%
+    const images = data.web_info.slider
+    %>
+    <%- `const images = ${JSON.stringify(images)}` %>
+
+    images.map((img) => {
+        myDropzone.emit("addedfile", img);
+        myDropzone.emit("thumbnail", img, `/assets/media/${img.filename}`);
+        myDropzone.emit("complete", img);
+        myDropzone.on('removedfile', (file) => {
+            console.log(file)
+        })
+    })
+
+    $('#web_info_form').submit(function (e){
+        e.preventDefault()
+        $.ajax({
+            url: '',
+            type: '',
+            beforeSend: LoadingWrapper(true),
+            success: function (response){
+                if(data.code === 202){
+                    setTimeout(()=>{
+                        location.href = '/admin/dashboard'
+                    },1000)
+                } else {
+                    alert('Fail update website information!')
+                    LoadingWrapper(false)
+                }
+            },
+            error: function (error){
+                alert('something went wrong!')
+                LoadingWrapper(false)
+            }
+        })
+    })
+    route.post('/update-web-info', DashboardController.UpdateWebInfo)
+    route.post('/update-about', upload(WEBSITE_STORAGE_PATH).single('image'), DashboardController.UpdateAbout)
+    route.post('/update-slider', upload(WEBSITE_STORAGE_PATH).array('images'), DashboardController.UpdateSlider)
+
+</script>
+
+<%- contentFor('style') %>
+<link href="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone.css" rel="stylesheet" type="text/css"/>
+<style>
+    .dz-progress {
+        display: none;
+    }
+</style>

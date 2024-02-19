@@ -4,8 +4,11 @@
             <div class="container-fluid pt-4 px-4 bg-secondary rounded"
                  style="position:sticky; z-index:1000; top: 64px">
                 <div class="row g-4">
-                    <div class="col-sm-9 col-xl-9">
+                    <div class="col-sm-2 col-xl-2">
                         <h6>Product Table</h6>
+                    </div>
+                    <div class="col-sm-7 col-xl-7" style="transform: translateY(-12px);">
+                        <%- include('../../partials/admin/search-box') %>
                     </div>
                     <div class="col-sm-2 col-xl-2" style="text-align: end;margin: 1rem;">
                         <a href="product/new">
@@ -18,7 +21,7 @@
                 <% if(data.product_list.length > 0 ){ %>
                     <%- include('../../partials/admin/product-table', {product_list: data.product_list}) %>
                 <% } else { %>
-                    <%- include('../../partials/admin/blank', {content: 'There are no product yet!, click on new button to add a new product'}) %>
+                    <%- include('../../partials/admin/blank', {content: 'There are no product yet!'}) %>
                 <% } %>
             </div>
         </div>
@@ -26,6 +29,13 @@
 </div>
 <%- contentFor('script') %>
 <script>
+    $('#btn_search_product').click(function (){
+        const search_name = $('#input_search_product').val()
+        if(search_name.trim() !== ''){
+            location.href = `/admin/product/search/${search_name}`
+        }
+    })
+
     $('.btn-edit-product').click(function (){
         const product_id = $(this).data('product-id')
         location.href = `/admin/product/edit/${product_id}`
@@ -64,3 +74,4 @@
 
 <%- contentFor('style') %>
 <link href="/assets/css/discount-price.css" rel="stylesheet" type="text/css"/>
+<link href="/assets/css/search-box.css" rel="stylesheet" type="text/css"/>

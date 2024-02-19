@@ -1,0 +1,58 @@
+<h6 class="mb-4">Website Information</h6>
+<form id="web_info_form">
+    <div class="row mb-3">
+        <label for="email" class="col-sm-1 col-form-label">
+            <i class="fa-solid fa-envelope" style="font-size: 2rem"></i>
+        </label>
+        <div class="col-sm-11">
+            <input type="email" class="form-control" name="email" id="email" value="<%= website.email %>" required>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="phone" class="col-sm-1 col-form-label">
+            <i class="fa-solid fa-phone" style="font-size: 2rem"></i>
+        </label>
+        <div class="col-sm-11">
+            <input type="text" class="form-control" id="phone" name="phone" value="<%= website.phone %>" required>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="location" class="col-sm-1 col-form-label">
+            <i class="fa-solid fa-location-dot" style="font-size: 2rem"></i>
+        </label>
+        <div class="col-sm-11">
+            <input type="text" class="form-control" id="location" name="location" value="<%= website.location %>" required>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="facebook" class="col-sm-1 col-form-label">
+            <i class="fa-brands fa-facebook" style="font-size: 2rem"></i>
+        </label>
+        <div class="col-sm-11">
+            <input type="text" class="form-control" id="facebook" name="facebook" value="<%= website.facebook %>" required>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="instagram" class="col-sm-1 col-form-label">
+            <i class="fa-brands fa-instagram" style="font-size: 2rem"></i>
+        </label>
+        <div class="col-sm-11">
+            <input type="text"
+                   class="form-control"
+                   id="instagram"
+                   name="instagram"
+                   value="<%= website.instagram %>"  required>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="twitter" class="col-sm-1 col-form-label">
+            <i class="fa-brands fa-twitter" style="font-size: 2rem"></i>
+        </label>
+        <div class="col-sm-11">
+            <input type="text" class="form-control" id="twitter" name="twitter" value="<%= website.twitter %>" required>
+        </div>
+    </div>
+    <div class="row" style="margin: .1%">
+        <button type="submit" class="col-sm-12 btn btn-success">Update</button>
+    </div>
+</form>

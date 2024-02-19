@@ -1,12 +1,16 @@
+const ProductRepository = require('../../repository/ProductRepository')
+
 const ProductController = {
-    ProductPage: (req, res) => {
+    ProductPage: async (req, res) => {
+        const product_list=
+            await ProductRepository.ProductList('_id slug name price rating discount is_discount images')
         const page_info = {
             title: 'Product',
             is_login: false
         }
 
         const data = {
-
+            product_list
         }
         res.render(
             'client/product',

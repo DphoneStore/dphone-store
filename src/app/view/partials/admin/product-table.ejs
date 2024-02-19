@@ -22,11 +22,11 @@
             <td><%= product.brand.name %></td>
             <td>
                 <% if(product.is_discount) { %>
-                    <s><span style="color: green">$</span><%= product.price %></s>
+                    <s><span style="color: green;">$</span><%= product.price %></s>
                     <br>
                     <span>-<%= product.discount %>%</span>
                     <br>
-                    <span style="color: green">$</span><%= product.price - (product.price * (product.discount / 100)) %>
+                    <span style="color: green;">$</span><%= product.price - (product.price * (product.discount / 100)) %>
                 <% } else { %>
                     <span style="color: green">$</span><%= product.price %>
                 <% } %>

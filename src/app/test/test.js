@@ -21,9 +21,16 @@ const Product = mongoose.model("Product", ProductSchema);
 //
 // create()
 
-const data = [
-    {name: 'khang1'},
-    {name: 'khang2'},
-    {name: 'khang3'}
-]
+const webSchema = require("../model/WebInfoSchema");
+const WebInfo = mongoose.model("WebInfo", webSchema);
+const web_seed = require('../../data/web.json')
+const database = require('../../config/connect-db')
+async function create(){
+    database.connect()
+    const result = await WebInfo.create(web_seed)
+    console.log(result)
+}
+
+create()
+
 

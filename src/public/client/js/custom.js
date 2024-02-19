@@ -9,9 +9,9 @@ $(function () {
 	/* Preloader
 	-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
 
-	setTimeout(function () {
-		$('.loader_bg').fadeToggle();
-	}, 250);
+	// setTimeout(function () {
+	// 	$('.loader_bg').fadeToggle();
+	// }, 250);
 
 	/* JQuery Menu
 	-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */

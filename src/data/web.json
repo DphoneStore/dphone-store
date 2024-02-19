@@ -1,0 +1,28 @@
+{
+  "website": {
+    "email": "khangok1610@gmail.com",
+    "phone": "0312312312",
+    "location": "this is location",
+    "facebook": "https://www.facebook.com/",
+    "instagram": "https://www.facebook.com/",
+    "twitter": "https://www.facebook.com/"
+  },
+  "about": {
+    "introduction": "https://www.facebook.com/",
+    "thumbnail": "about.png"
+  },
+  "slider": [
+    {
+      "filename": "template.jpg",
+      "size": 1000
+    },
+    {
+      "filename": "template.jpg",
+      "size": 1000
+    },
+    {
+      "filename": "template.jpg",
+      "size": 1000
+    }
+  ]
+}

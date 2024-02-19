@@ -5,8 +5,27 @@ const FileUtil = require('../../../util/file-util')
 const {PRODUCT_STORAGE_PATH} = require("../../constant/StoragePath");
 
 const ProductController = {
+    SearchProduct: async (req, res) => {
+        const product_name = req.params.name
+        const product_list = await ProductRepository.FindByName(product_name)
+        const page_info = {
+            title: 'Product'
+        }
+        console.log(product_list)
+        const data = {
+            product_list
+        }
+        res.render(
+            'admin/product/product',
+            {
+                layout: 'layout/admin-layout',
+                page_info,
+                data
+            }
+        )
+    },
     ProductManagement: async (req, res) => {
-        const product_list = await ProductRepository.ProductList()
+        const product_list = await ProductRepository.ProductList('_id name slug price discount is_discount stock images rating release_date')
         const page_info = {
             title: 'Product'
         }
@@ -110,7 +129,6 @@ const ProductController = {
                 special_feature: req.body.special_feature
             }
         }
-
         try {
             await ProductRepository.Create(product)
             res.status(200).json({code: CREATED, message: 'Success create new product'})

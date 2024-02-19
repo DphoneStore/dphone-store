@@ -1,6 +1,6 @@
 $(document).ready(function () {
     // Worldwide Sales Chart
-    var ctx1 = $("#worldwide-sales").get(0).getContext("2d");
+    var ctx1 = $("#worldwide_sales").get(0).getContext("2d");
     var myChart1 = new Chart(ctx1, {
         type: "bar",
         data: {
@@ -29,7 +29,7 @@ $(document).ready(function () {
 
 
     // Salse & Revenue Chart
-    var ctx2 = $("#salse-revenue").get(0).getContext("2d");
+    var ctx2 = $("#salse_revenue").get(0).getContext("2d");
     var myChart2 = new Chart(ctx2, {
         type: "line",
         data: {

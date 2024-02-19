@@ -1,15 +1,17 @@
 I. admin UI
     1. dashboard: done@
     2. brand: @done
-    3. product:
-
+    3. product: @done
+    4. search box: @done
 II. customer UI
     1. brand: done@
-    2. product
+    2. product:
 
 II function:
     1. CRUD brand: @done
-    2. CRUD product
+    2. CRUD product: @done
+    3. search product: @done
+
 
 
 

@@ -32,6 +32,12 @@
 }
 
 
+
+.loader_bg {
+     display: none;
+}
+
+
 .active {
      color: black!important;
      font-weight: bold!important;
