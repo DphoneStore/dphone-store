@@ -1,0 +1,165 @@
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-sm-12 col-xl-12">
+            <div class="container-fluid pt-4 px-4 bg-secondary rounded"
+                 style="position:sticky; z-index:1000; top: 64px">
+                <div class="row g-4">
+                    <div class="col-sm-9 col-xl-9">
+                        <h6>Order Table</h6>
+                    </div>
+                    <div class="col-sm-3 col-xl-3" style="transform: translateY(-12px);">
+                        <div class="form-floating mb-3">
+                            <select class="form-select" id="order_type" aria-label="Floating label select example">
+                                <option value="ORDER" <%= data.order_type === 'ORDER' ? 'selected' : '' %> >ORDER</option>
+                                <option value="PAID" <%= data.order_type === 'PAID' ? 'selected' : '' %> >PAID</option>
+                                <option value="DELIVERY" <%= data.order_type === 'DELIVERY' ? 'selected' : '' %> >DELIVERY</option>
+                                <option value="CANCEL" <%= data.order_type === 'CANCEL' ? 'selected' : '' %> >CANCEL</option>
+                            </select>
+                            <label for="order_type">Order Type</label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="bg-secondary rounded h-100 p-4 mt-3">
+                <% if(data.order_list.length > 0 ){ %>
+                    <%- include('./partials/order-table', {order_list: data.order_list}) %>
+                <% } else { %>
+                    <%- include('../../partials/admin/blank', {content: 'There are no order yet!'}) %>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('./partials/confirm-delivery') %>
+<%- include('./partials/confirm-cancel-order') %>
+<%- include('./partials/confirm-done-order') %>
+<%- contentFor('script') %>
+<script>
+    // $("#input_search_product").on("keydown", function(event) {
+    //     if(event.code == "Enter") {
+    //         const search_name = $('#input_search_product').val()
+    //         if(search_name.trim() !== ''){
+    //             location.href = `/admin/product/search/${search_name}`
+    //         }
+    //     }
+    // })
+    //
+    // $('#btn_search_product').click(function (){
+    //     const search_name = $('#input_search_product').val()
+    //     if(search_name.trim() !== ''){
+    //         location.href = `/admin/product/search/${search_name}`
+    //     }
+    // })
+
+    //done order
+    let done_order_id = 0
+    $('.btn-done-order').click(function (){
+        done_order_id = $(this).data('order-id')
+        $('#btn_open_confirm_done_order_modal').click()
+    })
+    $('#btn_ok_done_order').click(function (){
+        $('#btn_close_confirm_done_order_modal').click()
+        $.ajax({
+            url: '/admin/order/done-order',
+            type: 'post',
+            data: {order_id: done_order_id},
+            dataType: 'json',
+            beforeSend: LoadingWrapper(true),
+            success: function (response){
+                setTimeout(()=>{
+                    if(response.code === 202){
+                        location.href = '/admin/order/DELIVERY'
+                    } else {
+                        Alert.Show('danger', 'Something went wrong!')
+                    }
+                    LoadingWrapper(false)
+                }, 1500)
+            },
+            error: function (error){
+                LoadingWrapper(false)
+                Alert.Show('danger', 'Something went wrong!')
+            }
+        })
+    })
+
+    //order type
+    $('#order_type').change(function (){
+        const order_type = $('#order_type').val()
+        location.href = `/admin/order/${order_type}`
+    })
+
+    //see detail
+    $('.btn-see-order-detail').click(function (){
+        const order_id = $(this).data('order-id')
+        location.href = `/admin/order/order-detail/${order_id}`
+    })
+
+    //delivery order
+    let delivery_order_id = 0
+    $('.btn-delivery').click(function (){
+        delivery_order_id = $(this).data('order-id')
+        $('#btn_open_confirm_delivery_modal').click()
+    })
+    $('#btn_ok_delivery').click(function (){
+        $('#btn_close_confirm_delivery_modal').click()
+        $.ajax({
+            url: '/admin/order/delivery',
+            type: 'post',
+            data: {order_id: delivery_order_id},
+            dataType: 'json',
+            beforeSend: LoadingWrapper(true),
+            success: function (response){
+                setTimeout(()=>{
+                    if(response.code === 202){
+                        location.href = '/admin/order/ORDER'
+                    } else {
+                        Alert.Show('danger', 'Something went wrong!')
+                    }
+                    LoadingWrapper(false)
+                }, 1500)
+            },
+            error: function (error){
+                LoadingWrapper(false)
+                Alert.Show('danger', 'Something went wrong!')
+            }
+        })
+    })
+
+    //cancel order
+    let cancel_order_id = 0
+    $('.btn-cancel-order').click(function (){
+        cancel_order_id = $(this).data('order-id')
+        $('#btn_open_confirm_cancel_order_modal').click()
+    })
+    $('#btn_ok_cancel_order').click(function (){
+        $('#btn_close_confirm_cancel_order_modal').click()
+        $.ajax({
+            url: '/admin/order/cancel-order',
+            type: 'post',
+            data: {order_id: cancel_order_id},
+            dataType: 'json',
+            beforeSend: LoadingWrapper(true),
+            success: function (response){
+                setTimeout(()=>{
+                    if(response.code === 202){
+                        location.href = '/admin/order/ORDER'
+                    } else {
+                        Alert.Show('danger', 'Something went wrong!')
+                    }
+                    LoadingWrapper(false)
+                }, 1500)
+            },
+            error: function (error){
+                setTimeout(()=>{
+                    Alert.Show('danger', 'Something went wrong!')
+                    LoadingWrapper(false)
+                }, 1500)
+            }
+        })
+    })
+</script>
+
+<%- contentFor('style') %>
+<link href="/assets/css/discount-price.css" rel="stylesheet" type="text/css"/>
+<link href="/assets/css/search-box.css" rel="stylesheet" type="text/css"/>

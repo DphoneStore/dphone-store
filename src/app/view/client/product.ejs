@@ -9,4 +9,162 @@
         </div>
     </div>
 </div>
-<%- include('../partials/client/product', {product_list: data.product_list}) %>
+<div class="brand-bg">
+    <div class="container-fluid" style="padding-left: 3rem; padding-right: 3rem">
+        <div class="row">
+            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-12">
+                <h2>Brand list</h2>
+                <ul id="brand_list">
+                    <% data.brand_list.map(brand => { %>
+                        <li><input type="checkbox" class="brand-name" value="<%= brand._id %>"
+                                   style="margin-right: .5rem"> <%= brand.name %> </li>
+                    <% }) %>
+                </ul>
+            </div>
+            <div class="col-xl-10 col-lg-10 col-md-10 col-sm-12">
+                <div class="search-box">
+                    <button class="btn-search" id="btn_search_product"><i class="fas fa-search"></i></button>
+                    <input type="text" class="input-search search-box-client" id="input_search_product" placeholder="Type to Search...">
+                </div>
+                <%- include('../partials/client/product', {product_list: data.product_list}) %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- contentFor('script') %>
+<script>
+    $('#btn_search_product').click(function (){
+
+        const product_name = $('#input_search_product').val()
+
+        if(product_name.trim() !== ''){
+            let brand_selected = []
+            const input_brand = $('#brand_list li input')
+            for (const input of input_brand) {
+                if (input.checked) {
+                    brand_selected.push(input.value)
+                }
+            }
+
+            if(brand_selected.length === 0){
+                brand_selected = null
+            }
+
+            $.ajax({
+                url: '/product/search-product',
+                type: 'get',
+                data: {
+                    brand_selected: JSON.stringify(brand_selected),
+                    product_name
+                },
+                beforeSend: LoadingWrapper(true),
+                success: function (response) {
+                    if (response.code === 200) {
+                        setTimeout(() => {
+                            AddMoreProduct(response.product_list)
+                            LoadingWrapper(false)
+                        }, 1500)
+                    } else {
+                        setTimeout(() => {
+                            LoadingWrapper(false)
+                            alert('Something went wrong!')
+                        })
+                    }
+
+                },
+                error: function (error) {
+                    LoadingWrapper(false)
+                    alert('Something went wrong!')
+                }
+            })
+        }
+    })
+
+
+
+    let query_timeout = null
+    $('.brand-name').change(function () {
+        clearTimeout(query_timeout)
+        query_timeout = setTimeout(() => {
+            GetProductByBrand()
+        }, 1500)
+
+        function GetProductByBrand() {
+            const brand_selected = []
+            const input_brand = $('#brand_list li input')
+            for (const input of input_brand) {
+                if (input.checked) {
+                    brand_selected.push(input.value)
+                }
+            }
+            $.ajax({
+                url: '/product/filter-brand',
+                type: 'get',
+                data: {brand_selected: JSON.stringify(brand_selected)},
+                beforeSend: LoadingWrapper(true),
+                success: function (response) {
+                    if (response.code === 202) {
+                        setTimeout(() => {
+                            AddMoreProduct(response.product_list)
+                            LoadingWrapper(false)
+                        }, 1500)
+                    } else {
+                        setTimeout(() => {
+                            LoadingWrapper(false)
+                            alert('Something went wrong!')
+                        })
+                    }
+
+                },
+                error: function (error) {
+                    LoadingWrapper(false)
+                    alert('Something went wrong!')
+                }
+            })
+        }
+    })
+
+    function AddMoreProduct(product_list) {
+        let product_html = ''
+        product_list.map(product => {
+            let price_html = ''
+            if (product.is_discount) {
+                price_html = `<div style="color: red">
+                                <span style="display: inline-block!important;color: green;font-size: 28px;">
+                                    $</span>${product.price - (product.price * (product.discount / 100))}
+                                <s class="s-secondary"><span
+                                    style="display: inline-block!important;font-size: x-large;">$${product.price}</span></s>
+                            </div>`
+            } else {
+                price_html = `<div class="d-inline" style="color: red">
+                            <span style="color: green; display: inline-block!important;font-size: 28px;">$</span>${product.price}
+                        </div>`
+            }
+            let start_html = ''
+            do {
+                product.rating--
+                start_html += `<i><img src="/client/images/star.png"/></i>`
+            }while(product.rating > 0)
+
+            product_html += `<div class="col-xl-3 col-lg-3 col-md-3 col-sm-2 margin">
+                <a href="/product/detail/${product._id}">
+                    <div class="brand_box">
+                        <img src="/assets/media/product/${product.images[0] ? product.images[0].filename : ''}"
+                             alt="${product.name}"/>
+                        <!--                            <h3>$<strong class="red"></strong></h3>-->
+                        <h3>
+                            ${price_html}
+                        </h3>
+                        <span style="font-size: x-large; margin-top: 1rem">${ product.name }</span>
+                         ${start_html}
+                    </div>
+                </a>
+            </div>`
+        })
+        $('#product_list_container').empty()
+        $('#product_list_container').append(product_html)
+    }
+</script>
+
+<%- contentFor('style') %>

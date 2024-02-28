@@ -1,0 +1,25 @@
+<div class="container-fluid pt-4 px-4">
+    <form id="product_form" method="post" enctype="multipart/form-data">
+        <div class="row g-4">
+            <div class="col-sm-12 col-xl-12"
+                 style="position:sticky; z-index:1000; top: 64px">
+                <div class="d-flex p-4 bg-secondary rounded justify-content-between align-items-end">
+                    <a href="/admin/order/ORDER">
+                        <button type="button" class="btn btn-primary"><i class="fas fa-chevron-left"></i></button>
+                    </a>
+                    <h5>Order Detail</h5>
+                    <h6>Customer: <span style="color: yellow"><%= data.order_detail.user.email %></span></h6>
+                </div>
+            </div>
+            <div class="col-sm-12 col-xl-12">
+                <div class="bg-secondary rounded h-100 p-4 mt-3">
+                    <%- include('./partials/order-detail-table', {details: data.order_detail.detail}) %>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<%- contentFor('script') %>
+
+<%- contentFor('style') %>

@@ -29,6 +29,15 @@
 </div>
 <%- contentFor('script') %>
 <script>
+    $("#input_search_product").on("keydown", function(event) {
+        if(event.code == "Enter") {
+            const search_name = $('#input_search_product').val()
+            if(search_name.trim() !== ''){
+                location.href = `/admin/product/search/${search_name}`
+            }
+        }
+    })
+
     $('#btn_search_product').click(function (){
         const search_name = $('#input_search_product').val()
         if(search_name.trim() !== ''){
@@ -41,9 +50,12 @@
         location.href = `/admin/product/edit/${product_id}`
     })
 
-    $('.btn-see-product-detail').click()
+    $('.btn-see-product-detail').click(function (){
+        const product_id = $(this).data('product-id')
+        window.open(`/product/detail/${product_id}`, '_blank');
+    })
 
-    let delete_product_id = 0
+    let cancel_order_id = 0
     $('.btn-delete-product').click(function (){
         delete_product_id = $(this).data('product-id')
         $('#btn_open_confirm_modal').click()

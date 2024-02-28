@@ -1,1 +1,210 @@
-product detail
+<%- include('../partials/client/product-detail-modal',{
+screen: data.product.screen,
+camera: data.product.camera,
+processor_graphics: data.product.processor_graphics,
+ram_storage: data.product.ram_storage,
+battery: data.product.battery,
+communicate_connect: data.product.communicate_connect,
+design_weight: data.product.design_weight,
+other: data.product.other
+})
+%>
+<input type="hidden" id="product_id" value="<%= data.product._id %>">
+<div class="card">
+    <div class="product-imgs">
+        <div class="img-display">
+            <div class="img-showcase">
+                <% data.product.images.map(img => { %>
+                    <div style="background: url(/assets/media/product/<%= img.filename %>) no-repeat center;"></div>
+                <% }) %>
+            </div>
+        </div>
+        <div class="img-select">
+            <% data.product.images.map((img, index) => { %>
+                <div class="img-item" data-id="<%= index + 1 %>">
+                    <a href="#">
+                        <img src="/assets/media/product/<%= img.filename %>" alt="phone image">
+                    </a>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+    <!-- card right -->
+    <div class="product-content">
+        <h2 class="product-title"><%= data.product.name %></h2>
+        <div class="product-rating" style="width: fit-content">
+            <div class="rate-box">
+                <% let count_star = 5
+                        while(count_star){ %>
+                    <input type="radio" <%= data.product.rating === count_star ? 'checked' : '' %> >
+                    <label class="star"></label>
+                <% count_star--} %>
+            </div>
+        </div>
+        <div class="product-price">
+            <% if(data.product.is_discount) { %>
+                <p class="last-price">Old Price: <span>$<%= data.product.price %></span></p>
+                <p class="new-price">New Price:
+                    <span>$<%= data.product.price - (data.product.price * (data.product.discount / 100)) %> (<%= data.product.discount %>%)</span>
+                </p>
+            <% } else { %>
+                <p class="new-price">Price:
+                    <span>$<%= data.product.price %></span>
+                </p>
+            <% } %>
+        </div>
+        <div class="product-detail">
+            <h2>about this phone: </h2>
+            <ul>
+                <li>Release Date: <span><%= data.product.release_date %></span></li>
+                <li>Brand: <span><%= data.product.brand.name %></span></li>
+                <li>Chipset: <span><%= data.product.processor_graphics.chipset %></span></li>
+                <li>RAM Capacity: <span><%= data.product.ram_storage.ram %></span></li>
+                <li>Internal Memory: <span><%= data.product.ram_storage.internal_memory %></span></li>
+                <li>Pin: <span><%= data.product.battery.pin %></span></li>
+                <li>Guarantee: <span><%= data.product.guarantee %></span></li>
+            </ul>
+        </div>
+        <div class="purchase-info">
+            <button type="button" class="btn" id="btn_add_to_cart">
+                Add to Cart <i class="fas fa-shopping-cart"></i>
+            </button>
+            <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#product_detail_modal">
+                See detailed configuration
+            </button>
+        </div>
+    </div>
+</div>
+<div class="brand">
+    <div class="brand-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 margin">
+                    <h2 style="font-weight: bold;">Reviews & comments</h2>
+                </div>
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 margin">
+                    <%- include('../partials/client/feedback-form') %>
+                </div>
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 margin" id="comment_container">
+                    <%- include('../partials/client/comment-row', {comment_list: data.comment_list}) %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- contentFor('script') %>
+<script src="/assets/js/client/product-detail.js"></script>
+<script src="/assets/js/admin/alert.js"></script>
+<script>
+    $('#btn_send_comment').click(function () {
+        const content = $('#input_comment').val()
+        if (content !== '') {
+            const inputs = $('#rating_feedback .rating_star')
+            let star = 5;
+            for (let input of inputs) {
+                if (input.checked) {
+                    star = input.id
+                }
+            }
+            const product_id = $('#product_id').val()
+            $.ajax({
+                url: '/comment',
+                type: 'post',
+                data: {star, content, product_id},
+                beforeSend: LoadingWrapper(true),
+                success: function (data) {
+                    if(data.code === 201){
+                        setTimeout(()=> {
+                            $('#comment_container').prepend(RenderComment(data.comment))
+                            LoadingWrapper(false)
+                        }, 1500)
+                    } else {
+                        setTimeout(()=> {
+                            alert('Something went wrong!')
+                            LoadingWrapper(false)
+                        }, 1500)
+                    }
+                },
+                error: function (error) {
+                    setTimeout(()=> {
+                        alert('Something went wrong!')
+                        LoadingWrapper(false)
+                    }, 1500)
+                }
+            })
+        }
+    })
+
+    function RenderComment(comment) {
+        let star = ''
+        let count_star = 5
+        while (count_star) {
+            star += ` <input type="radio" ${comment.star === count_star ? 'checked' : ''} >
+                        <label class="star"></label>`
+            count_star--
+        }
+        comment.createdAt = new Date(comment.createdAt)
+        comment.createdAt = [
+            comment.createdAt.getDate(),
+            comment.createdAt.getMonth() + 1,
+            comment.createdAt.getFullYear()].join('-')
+
+        return `<div class="testimonial-box">
+        <div class="box-top">
+            <div class="profile">
+                <div class="profile-img">
+                    <img src="/assets/media/avatar/${comment.avatar}"/>
+                </div>
+                <div class="name-user">
+                    <strong>${comment.full_name}</strong>
+                    <span>
+                    ${comment.createdAt}
+                </span>
+                </div>
+            </div>
+            <div class="reviews">
+                <div class="rate-box">
+                 ${star}
+                </div>
+            </div>
+        </div>
+        <div class="client-comment">
+            <p>${comment.content}</p>
+        </div>
+    </div>`
+    }
+
+    $('#btn_add_to_cart').click(function (){
+        const product_id = $('#product_id').val()
+        $.ajax({
+            url: '/cart/add-to-cart',
+            type: 'post',
+            data: {product_id},
+            beforeSend: LoadingWrapper(true),
+            success: function (response) {
+                if (response.code === 202) {
+                    setTimeout(() => {
+                        LoadingWrapper(false)
+                        Alert.Show('success', 'Add product to cart successfully')
+                    }, 1500)
+                } else {
+                    setTimeout(() => {
+                        LoadingWrapper(false)
+                        Alert.Show('danger', 'Bad request')
+                    })
+                }
+            },
+            error: function (error) {
+                LoadingWrapper(false)
+                Alert.Show('danger', 'Something went wrong!')
+            }
+        })
+    })
+</script>
+
+<%- contentFor('style') %>
+<link rel="stylesheet" href="/assets/css/client/product-detail.css">
+<link rel="stylesheet" href="/assets/css/client/feedback-form.css">
+<link rel="stylesheet" href="/assets/css/client/comment-row.css">
+<link rel="stylesheet" href="/assets/css/alert.css">

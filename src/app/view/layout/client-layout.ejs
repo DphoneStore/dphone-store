@@ -26,10 +26,10 @@
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
     <!-- owl stylesheets -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/client/css/owl.carousel.min.css">
+<!--    <link rel="stylesheet" href="/client/css/owl.carousel.min.css">-->
     <link rel="stylesheet" href="/client/css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"
-          media="screen">
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"-->
+<!--          media="screen">-->
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
@@ -42,14 +42,16 @@
     <!--    my css -->
     <link rel="stylesheet" href="/assets/css/loading.css">
     <link rel="stylesheet" href="/assets/css/discount-price.css">
+    <link rel="stylesheet" href="/assets/css/checkbox.css">
+    <link rel="stylesheet" href="/assets/css/search-box.css">
+
+    <%- style %>
 </head>
 <!-- body -->
 
 <body class="main-layout ">
 <!-- loader  -->
-<div class="loader_bg">
-    <%- include('../partials/client/loading') %>
-</div>
+<%- include('../partials/client/loading') %>
 <!-- header -->
 <%- include('../partials/client/header.ejs') %>
 <%- body %>
@@ -57,17 +59,19 @@
 <%- include('../partials/client/footer.ejs') %>
 
 <!-- Javascript files-->
-<script src="/client/js/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <script src="/client/js/popper.min.js"></script>
 <script src="/client/js/bootstrap.bundle.min.js"></script>
-<script src="/client/js/jquery-3.0.0.min.js"></script>
 <script src="/client/js/plugin.js"></script>
 <!-- sidebar -->
-<script src="/client/js/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="/client/js/custom.js"></script>
 <!-- javascript -->
-<script src="/client/js/owl.carousel.js"></script>
-<script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script src="/assets/js/admin/loading-wrapper.js"></script>
 <script>
     $(document).ready(function () {
         $(".fancybox").fancybox({
@@ -83,7 +87,13 @@
             $(this).removeClass('transition');
         });
     });
+
+    $('#btn_logout').click(function () {
+        $.removeCookie('user_token', { path: '/' });
+        location.href = '/security/login'
+    })
 </script>
+<%- script %>
 </body>
 
 </html>

@@ -1,7 +1,14 @@
+.search-box-client {
+    background-color: #EB1616!important;
+}
+
 .search-box{
     width: fit-content;
     height: fit-content;
     position: relative;
+    display: block;
+    margin-left: auto;
+    margin-bottom: 2rem;
 }
 .input-search{
     height: 50px;

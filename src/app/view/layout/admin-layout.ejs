@@ -31,15 +31,14 @@
     <!-- Template Stylesheet -->
     <link href="/admin/css/style.css" rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/loading.css">
+    <link rel="stylesheet" href="/assets/css/alert.css">
 
     <%- style %>
 </head>
 
 <body>
 <div class="container-fluid position-relative d-flex p-0">
-    <div class="loader_bg">
-        <%- include('../partials/client/loading') %>
-    </div>
+    <%- include('../partials/client/loading') %>
 
     <!-- nav Start -->
     <%- include('../partials/admin/nav', page_info.title) %>
@@ -58,12 +57,24 @@
 </body>
 <!-- JavaScript Libraries -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
 <script src="/admin/lib/chart/chart.min.js"></script>
 <script src="/assets/js/admin/main.js"></script>
 <script src="/assets/js/admin/loading-wrapper.js"></script>
+<script src="/assets/js/admin/alert.js"></script>
+<script src="/assets/js/admin/utils.js"></script>
+<script>
+    //logout
+    $('#btn_logout').click(function () {
+        $.removeCookie('user_token', { path: '/' });
+        location.href = '/security/login'
+    })
+</script>
 
 <%- script %>
+
 </html>

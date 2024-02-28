@@ -1,14 +1,17 @@
 <div class="brand-bg">
     <div class="container">
         <div class="row">
-            <% const brand_list = [1,2,3,4]; for (let brand in brand_list) { %>
-            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 margin">
-                <div class="brand_box">
-                    <img src="/client/images/1.png" alt="img" />
-                    <h3><strong>Mobile Phone</strong></h3>
+            <% data.brand_list.map(brand =>{ %>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 margin">
+                    <a href="/product/<%= brand.name %>">
+                        <div class="brand_box">
+                            <img src="/assets/media/logo-brand/<%= brand.logo.name %>" alt="img"/>
+                            <h3><strong><%= brand.name %></strong></h3>
+                        </div>
+                    </a>
                 </div>
-            </div>
-           <% } %>
+            <% }) %>
         </div>
     </div>
 </div>
+

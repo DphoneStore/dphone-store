@@ -3,24 +3,40 @@ I. admin UI
     2. brand: @done
     3. product: @done
     4. search box: @done
+    5. dashboard: @done
+    5. order:
+    5. order detail:
+
 II. customer UI
     1. brand: done@
-    2. product:
-
+    3. security: @done
+    4. not-found: @done
+    5. home page: done@
+    6. product:
+        6.1 search: @done
+        6.2 list: @done
+        6.3 brand: @done
+    7. product detail: @done
+    8. Reviews & comments: @done
+    9. check out: @done
+    10. order: @done
+    11. order detail ################# UI
 II function:
     1. CRUD brand: @done
     2. CRUD product: @done
     3. search product: @done
-
-
-
-
-
-product table
-1. name
-2. img
-3. brand
-4. price
-5. stock
-6. rating
-7. detail button
+    4. CRUD web information: @done
+    5. security: @done
+    7. product list: @done
+    8. product list follow brand: @done
+    9. product search: @done
+    10. product detail: @done
+    11. Reviews & comments: @done
+    12. cart: @done
+    13. profile: @done
+    14. order:
+    15. dashboard:
+    16. message:
+    17. forget pass:
+    12. old cart:
+    6. chart & revenue:

@@ -1,12 +1,23 @@
+const WebInfoRepository = require('../../repository/WebInfoRepository')
+const BrandRepository = require('../../repository/BrandRepository')
+
 const ClientController = {
-    HomePage: (req, res) => {
+    HomePage: async (req, res) => {
+        const has_login = !!req.cookies.user_token
+        const {website} = await WebInfoRepository.GetWebsiteInfo()
+        const {about, slider} = await WebInfoRepository.GetHomeInfo()
+        const brand_list = await BrandRepository.BrandList()
+
         const page_info = {
             title: 'Home',
-            is_login: false
+            has_login,
+            website
         }
 
         const data = {
-
+            about,
+            slider,
+            brand_list
         }
         res.render(
             'client/home',
@@ -17,14 +28,18 @@ const ClientController = {
             }
         )
     },
-    BrandPage: (req, res) => {
+    BrandPage: async (req, res) => {
+        const has_login = !!req.cookies.user_token
+        const {website} = await WebInfoRepository.GetWebsiteInfo()
+        const brand_list = await BrandRepository.BrandList()
         const page_info = {
             title: 'Brand',
-            is_login: false
+            has_login,
+            website
         }
 
         const data = {
-
+            brand_list
         }
         res.render(
             'client/brand',

@@ -1,0 +1,59 @@
+<table class="table table-hover" style="text-align: center;">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Order Date</th>
+        <th scope="col">Customer</th>
+        <th scope="col">Email</th>
+        <th scope="col">Phone</th>
+        <th scope="col">Address</th>
+        <th scope="col">Total price</th>
+        <th scope="col">status</th>
+        <th scope="col">Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% order_list.map((order, index) => { %>
+        <tr>
+            <th scope="row"><%= index + 1 %></th>
+            <td><%= order.order_date %></td>
+            <td><%= order.user.full_name %></td>
+            <td><%= order.user.email %></td>
+            <td><%= order.user.phone %></td>
+            <td><%= order.user.address %></td>
+            <%
+                let total_price = 0
+                order.detail.map(detail => {
+                    total_price += detail.price
+                })
+            %>
+            <td><span style="color: green">$</span><%= total_price %></td>
+            <td><%= order.status %></td>
+            <td style="vertical-align: middle;">
+                <div class="btn-group-vertical" role="group">
+                    <button type="button" class="btn btn-info btn-see-order-detail" data-order-id="<%= order._id %>">
+                        <i class="fa-solid fa-circle-info me-2"></i>
+                        Detail
+                    </button>
+                    <% if(data.order_type === 'ORDER'){ %>
+                        <button type="button" class="btn btn-success btn-delivery" data-order-id="<%= order._id %>">
+                            <i class="fas fa-truck me-2"></i>
+                            Delivery
+                        </button>
+                        <button type="button" class="btn btn-primary btn-cancel-order" data-order-id="<%= order._id %>">
+                            <i class="fas fa-ban me-2"></i>
+                            Cancel
+                        </button>
+                    <% } %>
+                    <% if(data.order_type === 'DELIVERY'){ %>
+                        <button type="button" class="btn btn-success btn-done-order" data-order-id="<%= order._id %>">
+                            <i class="fas fa-check me-2"></i>
+                            Done
+                        </button>
+                    <% } %>
+                </div>
+            </td>
+        </tr>
+    <% }) %>
+    </tbody>
+</table>

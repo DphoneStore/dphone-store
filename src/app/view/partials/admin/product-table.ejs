@@ -17,8 +17,10 @@
         <tr>
             <th scope="row"><%= index + 1 %></th>
             <td><%= product.name %></td>
-            <td><img src="/assets/media/product/<%= product.images.length > 0 ? product.images[0].filename : '' %>"
-                     width="250px" alt=""></td>
+            <td>
+                <img src="/assets/media/product/<%= product.images.length > 0 ? product.images[0].filename : '' %>"
+                     style="min-width: 1rem; max-width: 6rem" alt="">
+            </td>
             <td><%= product.brand.name %></td>
             <td>
                 <% if(product.is_discount) { %>
@@ -39,7 +41,7 @@
             <td><%= product.release_date %></td>
             <td style="vertical-align: middle;">
                 <div class="btn-group-vertical" role="group">
-                    <button type="button" class="btn btn-info btn-see-product-detail" data-product-slug="<%= product.slug %>">
+                    <button type="button" class="btn btn-info btn-see-product-detail" data-product-id="<%= product._id %>">
                         <i class="fa-solid fa-circle-info me-2"></i>
                         Detail
                     </button>

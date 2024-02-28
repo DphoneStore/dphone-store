@@ -1,8 +1,5 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-slug = require('mongoose-slug-generator')
-mongoose.plugin(slug)
-
 const ProductSchema = new Schema({
     release_date: {type: String, required: true},
     name: {type: String, required: true},
@@ -10,13 +7,13 @@ const ProductSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Brand'
     },
-    slug: {type: String, slug: 'name'},
     price: {type: Number, required: true},
     stock: {type: Number, required: true},
     discount: {type: Number, required: true},
     images: {type: Array, required: true},
     rating: {type: Number, default: 0},
     is_discount: {type: Boolean, default: false},
+    guarantee: {type: String, required: true},
     screen: {
         screen_size: {type: String, required: true},
         screen_tech: {type: String, required: true},

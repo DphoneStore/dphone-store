@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Sign Up</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Roboto:wght@500;700&display=swap"
+          rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link href="/admin/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet"/>
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/admin/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="/admin/css/style.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="/assets/css/loading.css">
+    <link rel="stylesheet" href="/assets/css/alert.css">
+</head>
+<body>
+<div class="container-fluid position-relative d-flex p-0">
+    <%- include('../partials/client/loading') %>
+    <div class="container-fluid">
+        <div class="row h-100 align-items-center justify-content-center" style="min-height: 100vh;">
+            <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
+                <div class="bg-secondary rounded p-4 p-sm-5 my-4 mx-3">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <a href="/" class="">
+                            <h3 class="text-primary"><i class="fa fa-user-edit me-2"></i>DPhone</h3>
+                        </a>
+                        <h3>Sign Up</h3>
+                    </div>
+                    <form id="register_form">
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control" id="email" placeholder="name@example.com" required>
+                            <label for="email">Email</label>
+                        </div>
+                        <div class="form-floating mb-4">
+                            <input type="password" class="form-control" id="password" placeholder="password" required>
+                            <label for="password">Password</label>
+                        </div>
+                        <div class="form-floating mb-4">
+                            <input type="password" class="form-control" id="confirm_pass" placeholder="confirm_pass"
+                                   required>
+                            <label for="confirm_pass">Confirm password</label>
+                        </div>
+                        <div class="form-floating mb-4">
+                            <input type="text" class="form-control" id="full_name" placeholder="full_name" required>
+                            <label for="full_name">Full name</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <select class="form-select" id="gender" required>
+                                <option selected value="">Select gender</option>
+                                <option value="female">Female</option>
+                                <option value="male">Male</option>
+                            </select>
+                            <label for="gender">Gender</label>
+                        </div>
+                        <div class="form-floating mb-4">
+                            <input type="number" class="form-control" id="phone" placeholder="phone" required>
+                            <label for="phone">Phone</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="date" class="form-control" id="birth_date" required>
+                            <label for="birth_date">Birth date</label>
+                        </div>
+                        <div class="form-floating mb-4">
+                            <input type="text" class="form-control" id="address" placeholder="address" required>
+                            <label for="address">Address</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary py-3 w-100 mb-4" >Sign Up</button>
+                    </form>
+
+                    <p class="text-center mb-0">Don't have an Account? <a href="/security/login">Sign In</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Sign In End -->
+</div>
+
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/admin/lib/easing/easing.min.js"></script>
+<script src="/assets/js/admin/alert.js"></script>
+<script src="/assets/js/admin/loading-wrapper.js"></script>
+<script>
+    $('#register_form').submit(function (e) {
+        e.preventDefault()
+        const email = $('#email').val()
+        const password = $('#password').val()
+        const confirm_pass = $('#confirm_pass').val()
+        const full_name = $('#full_name').val()
+        const gender = $('#gender').val()
+        const phone = $('#phone').val()
+        const birth_date = $('#birth_date').val()
+        const address = $('#address').val()
+        if (password !== confirm_pass) {
+            Alert.Show('warning', 'Password and confirm password not match!')
+            return
+        }
+
+        $.ajax({
+            url: '/security/register',
+            type: 'post',
+            dataType: 'json',
+            beforeSend: LoadingWrapper(true),
+            data: {email, password, confirm_pass, full_name, gender, phone, birth_date, address},
+            success: function (response){
+                if(response.code === 201){
+                    setTimeout(()=>{
+                        Alert.Show('success', 'Sign up successfully, you can login now')
+                        LoadingWrapper(false)
+                    }, 1500)
+                } else if(response.code === 204){
+                    setTimeout(()=>{
+                        Alert.Show('warning', 'Email existed')
+                        LoadingWrapper(false)
+                    }, 1500)
+                }else {
+                    setTimeout(()=>{
+                        Alert.Show('success', 'Sign up failed!, something went wrong')
+                        LoadingWrapper(false)
+                    }, 1500)
+                }
+            },
+            error: function (error){
+                Alert.Show('success', 'Sign up failed!, something went wrong')
+                LoadingWrapper(false)
+            }
+        })
+    })
+</script>
+</body>
+</html>

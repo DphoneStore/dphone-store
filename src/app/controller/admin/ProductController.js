@@ -25,11 +25,10 @@ const ProductController = {
         )
     },
     ProductManagement: async (req, res) => {
-        const product_list = await ProductRepository.ProductList('_id name slug price discount is_discount stock images rating release_date')
+        const product_list = await ProductRepository.ProductList('_id name price discount is_discount stock images rating release_date')
         const page_info = {
             title: 'Product'
         }
-        // return res.send(product_list)
         const data = {
             product_list
         }
@@ -77,6 +76,7 @@ const ProductController = {
             discount: req.body.discount,
             is_discount: req.body.is_discount,
             images: images,
+            guarantee: req.body.guarantee,
             screen: {
                 screen_size: req.body.screen_size,
                 screen_tech: req.body.screen_tech,
@@ -129,6 +129,9 @@ const ProductController = {
                 special_feature: req.body.special_feature
             }
         }
+
+        console.log(product)
+
         try {
             await ProductRepository.Create(product)
             res.status(200).json({code: CREATED, message: 'Success create new product'})
@@ -137,7 +140,8 @@ const ProductController = {
             Object.keys(error.errors).forEach((key) => {
                 errors[key] = error.errors[key].message;
             });
-            res.status(200).json({code: BAD_REQUEST, errors})
+            console.log('error', errors)
+            res.status(200).json({code: BAD_REQUEST, message: 'create product failed'})
         }
     },
     EditProductPage: async (req, res) => {
@@ -201,7 +205,6 @@ const ProductController = {
         })
 
         const product = {
-            _id: req.body.product_id,
             release_date: req.body.release_date,
             name: req.body.name,
             price: req.body.price,
@@ -209,6 +212,7 @@ const ProductController = {
             stock: req.body.stock,
             discount: req.body.discount,
             is_discount: req.body.is_discount,
+            guarantee: req.body.guarantee,
             images: images,
             screen: {
                 screen_size: req.body.screen_size,
@@ -262,16 +266,14 @@ const ProductController = {
                 special_feature: req.body.special_feature
             }
         }
-
+        console.log(product)
         try {
-            await ProductRepository.Update(product)
+            const result = await ProductRepository.Update(req.body.product_id, product)
+            console.log(result)
             res.status(200).json({code: UPDATED, message: 'Success update product'})
         } catch (error) {
-            let errors = {};
-            Object.keys(error.errors).forEach((key) => {
-                errors[key] = error.errors[key].message;
-            });
-            res.status(200).json({code: BAD_REQUEST, errors})
+            console.log(error)
+            res.status(200).json({code: BAD_REQUEST, message: 'update product failed'})
         }
     },
     DeleteProduct: async (req, res) => {
@@ -279,11 +281,11 @@ const ProductController = {
         let product = null
         try {
             product = await ProductRepository.FindAndDelete(product_id)
-        } catch (error){
-            return res.status(200).json({code:BAD_REQUEST, message: 'Fail delete product'})
+        } catch (error) {
+            return res.status(200).json({code: BAD_REQUEST, message: 'Fail delete product'})
         }
 
-        if(!product){
+        if (!product) {
             return res.status(200).json({code: NOT_FOUND, message: 'Not found product'})
         }
         return res.status(200).json({code: DELETED, message: 'Success delete product'})

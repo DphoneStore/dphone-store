@@ -1,0 +1,248 @@
+<div class="container" style="margin-bottom:6rem;margin-top: 6rem;">
+    <div class="row gutters">
+        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="account-settings" style="text-align: center;">
+                        <div class="user-profile">
+                            <div class="user-avatar">
+                                <img src="/assets/media/avatar/<%=  data.user.avatar %>" alt="avatar" id="user_avatar">
+                            </div>
+                            <h5 class="user-name"><%= data.user.full_name %></h5>
+                            <h6 class="user-email"><%= data.user.email %></h6>
+                        </div>
+                        <form id="avatar_form" hidden enctype="multipart/form-data">
+                            <input type="file" id="input_avatar" name="avatar" hidden>
+                        </form>
+                        <button class="btn btn-info" id="btn_open_choose_avatar">Change avatar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+            <div class="card h-100">
+                <div class="card-body">
+                    <form id="user_detail_form">
+                    <div class="row gutters">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <h6 class="mb-2 text-primary">Personal Details</h6>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label for="full_name">Full Name</label>
+                                <input type="text" required class="form-control" id="full_name" placeholder="Enter full name" value="<%= data.user.full_name %>">
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label for="phone">Phone</label>
+                                <input type="text" required class="form-control" id="phone" placeholder="Enter phone" value="<%= data.user.phone %>">
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label for="birth_date">Birth Date</label>
+                                <input type="date" required  class="form-control" id="birth_date" placeholder="Enter birth date" value="<%= data.user.birth_date %>">
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label for="gender" style="display: block">Gender</label>
+                                <select id="gender" required>
+                                    <option value="male"  <%= data.user.gender === 'male' ? 'selected' : '' %> >Male</option>
+                                    <option value="female" <%= data.user.gender === 'female' ? 'selected' : '' %> >Female</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label for="address">Address</label>
+                                <input type="text" required class="form-control" id="address" placeholder="Enter address" value="<%= data.user.address %>">
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" style="text-align: end;">
+                            <button class="btn btn-success" type="submit" id="btn_update_user_detail">Update</button>
+                        </div>
+                    </div>
+                    </form>
+                    <hr>
+                    <form id="pass_form">
+                    <div class="row gutters">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <h6 class="mt-3 mb-2 text-primary">Change Password</h6>
+                        </div>
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-4">
+                            <div class="form-group">
+                                <label for="current_pass">Current Password</label>
+                                <input type="password" required class="form-control" id="current_pass" placeholder="Enter current password">
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
+                            <div class="form-group">
+                                <label for="new_pass">New password</label>
+                                <input type="password" required class="form-control" id="new_pass" placeholder="Enter new password">
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
+                            <div class="form-group">
+                                <label for="repeat_pass">Repeat Password</label>
+                                <input type="password" required class="form-control" id="repeat_pass" placeholder="Enter repeat password">
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" style="text-align: end;">
+                            <button class="btn btn-success">Update</button>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- contentFor('script')  %>
+<script src="/assets/js/admin/alert.js"></script>
+<script>
+    $('#pass_form').submit(function (e){
+        e.preventDefault()
+        const current_pass = $('#current_pass').val()
+        const new_pass = $('#new_pass').val()
+        const repeat_pass = $('#repeat_pass').val()
+
+        if(new_pass !== repeat_pass){
+            Alert.Show('warning', 'new pass not match repeat pass')
+            return
+        }
+
+        $.ajax({
+            url: '/profile/update/pass',
+            type: 'post',
+            data: {current_pass, new_pass},
+            beforeSend: LoadingWrapper(true),
+            success: function (response) {
+                console.log(response)
+                if (response.code === 202) {
+                    setTimeout(() => {
+                        LoadingWrapper(false)
+                        Alert.Show('success', 'Update your password successfully')
+                    }, 1500)
+                } else {
+                    setTimeout(() => {
+                        LoadingWrapper(false)
+                        Alert.Show('danger', 'Bad request')
+                    })
+                }
+            },
+            error: function (error) {
+                LoadingWrapper(false)
+                Alert.Show('danger', 'Something went wrong!')
+            }
+        })
+    })
+
+
+    $('#user_detail_form').submit(function (e){
+        e.preventDefault()
+        const full_name = $('#full_name').val()
+        const phone = $('#phone').val()
+        const gender = $('#gender').val()
+        const address = $('#address').val()
+        const birth_date = $('#birth_date').val()
+        if(!isNumeric(phone)){
+            Alert.Show('warning', 'Phone number must be number')
+            return
+        }
+        $.ajax({
+            url: '/profile/update/detail',
+            type: 'post',
+            data: {full_name, phone, gender, address, birth_date},
+            beforeSend: LoadingWrapper(true),
+            success: function (response) {
+                if (response.code === 202) {
+                    setTimeout(() => {
+                        LoadingWrapper(false)
+                        Alert.Show('success', 'Update your information successfully')
+                    }, 1500)
+                } else {
+                    setTimeout(() => {
+                        LoadingWrapper(false)
+                        Alert.Show('danger', 'Bad request')
+                    })
+                }
+            },
+            error: function (error) {
+                LoadingWrapper(false)
+                Alert.Show('danger', 'Something went wrong!')
+            }
+        })
+    })
+
+    function isNumeric(value) {
+        return /^-?\d+$/.test(value);
+    }
+
+    $('#btn_open_choose_avatar').click(function (){
+        $('#input_avatar').click()
+    })
+
+    $('#input_avatar').change(function (e){
+        const input = document.getElementById('input_avatar');
+        if(input.files.length === 0){
+            return
+        }
+        $('#avatar_form').submit()
+    })
+
+    $('#avatar_form').submit(function (e){
+        e.preventDefault()
+        const form_data = new FormData(this)
+        $.ajax({
+            url: '/profile/update/avatar',
+            type: 'post',
+            processData: false,
+            contentType: false,
+            data: form_data,
+            beforeSend: LoadingWrapper(true),
+            success: function (response) {
+                if (response.code === 202) {
+                    setTimeout(() => {
+                        LoadingWrapper(false)
+                        previewImage()
+                        Alert.Show('success', 'Update your avatar successfully')
+                    }, 1500)
+                } else {
+                    setTimeout(() => {
+                        LoadingWrapper(false)
+                        Alert.Show('danger', 'Bad request')
+                    })
+                }
+            },
+            error: function (error) {
+                LoadingWrapper(false)
+                Alert.Show('danger', 'Something went wrong!')
+            }
+        })
+    })
+
+    function previewImage() {
+        const input = document.getElementById('input_avatar');
+        const preview = document.getElementById('user_avatar');
+        const file = input.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+            preview.hidden = false
+        } else {
+            preview.hidden = true
+            preview.src = '#';
+        }
+    }
+</script>
+
+
+<%- contentFor('style')  %>
+<link rel="stylesheet" href="/assets/css/client/profile.css">
+<link rel="stylesheet" href="/assets/css/alert.css">

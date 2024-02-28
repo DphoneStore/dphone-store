@@ -24,11 +24,11 @@
                                     <li class="nav-hover"><a href="/" class="<%= NavActivated("Home", page_info.title) %>">Home</a> </li>
                                     <li class="nav-hover"><a href="/brand" class="<%= NavActivated("Brand", page_info.title) %>">Brand</a></li>
                                     <li class="nav-hover"><a href="/product" class="<%= NavActivated("Product", page_info.title) %>">Product</a></li>
-                                    <% if(page_info.is_login){ %>
-                                        <li class="nav-hover"><a href="#"><i class="fas fa-user-circle" style="font-size: 1.5rem"></i></a></li>
-                                        <li class="nav-hover"><a href="/logout"><i class="fas fa-sign-out-alt" style="font-size: 1.5rem"></i></a></li>
+                                    <% if(page_info.has_login){ %>
+                                        <li class="nav-hover"><a href="/profile"><i class="fas fa-user-circle" style="font-size: 1.5rem"></i></a></li>
+                                        <li class="nav-hover"><a id="btn_logout" href="#"><i class="fas fa-sign-out-alt" style="font-size: 1.5rem"></i></a></li>
                                     <% } else { %>
-                                        <li class="nav-hover"><a href="#login"><i class="fas fa-sign-in-alt" style="font-size: 1.5rem"></i></a></li>
+                                        <li class="nav-hover"><a href="/security/login"><i class="fas fa-sign-in-alt" style="font-size: 1.5rem"></i></a></li>
                                     <% } %>
                                     <li class="nav-hover"><a href="/cart"><i class="fas fa-cart-plus"   style="font-size: 1.5rem"></i></a></li>
                                 </ul>
@@ -39,9 +39,9 @@
                 <div class="col-md-6 offset-md-6">
                     <div class="location_icon_bottum">
                         <ul>
-                            <li><img src="/client/icon/call.png" />(+71)9876543109</li>
-                            <li><img src="/client/icon/email.png" />demo@gmail.com</li>
-                            <li><img src="/client/icon/loc.png" />Location</li>
+                            <li><img src="/client/icon/call.png" /><%= page_info.website.phone %></li>
+                            <li><img src="/client/icon/email.png" /><%= page_info.website.email %></li>
+                            <li><img src="/client/icon/loc.png" /><%= page_info.website.location %></li>
                         </ul>
                     </div>
                 </div>

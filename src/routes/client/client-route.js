@@ -6,4 +6,5 @@ const route = express.Router()
 route.get('/', HomeController.HomePage)
 route.get('/brand', HomeController.BrandPage)
 
+
 module.exports = route

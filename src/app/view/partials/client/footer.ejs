@@ -6,32 +6,24 @@
                     <div class="footer-box">
                         <div class="headinga">
                             <h3>Address</h3>
-                            <span>Healing Center, 176 W Streetname,New York, NY 10014, US</span>
-                            <p>(+71) 8522369417
-                                <br>demo@gmail.com</p>
+                            <span><%= page_info.website.location %></span>
+                            <p><%= page_info.website.phone %>
+                                <br><%= page_info.website.email %></p>
                         </div>
                         <ul class="location_icon">
-                            <li> <a href="#"><i class="fa-brands fa-facebook"></i></a></li>
-                            <li> <a href="#"><i class="fa-brands fa-twitter"></i></a></li>
-                            <li> <a href="#"><i class="fa-brands fa-instagram"></i></a></li>
+                            <li> <a href="<%= page_info.website.facebook %>"><i class="fa-brands fa-facebook"></i></a></li>
+                            <li> <a href="<%= page_info.website.twitter %>"><i class="fa-brands fa-twitter"></i></a></li>
+                            <li> <a href="<%= page_info.website.instagram %>"><i class="fa-brands fa-instagram"></i></a></li>
                         </ul>
                         <div class="menu-bottom">
                             <ul class="link">
-                                <li> <a href="#">Home</a></li>
-                                <li> <a href="#">About</a></li>
-
-                                <li> <a href="#">Brand </a></li>
-                                <li> <a href="#">Specials  </a></li>
-                                <li> <a href="#"> Contact us</a></li>
+                                <li> <a href="/">Home</a></li>
+                                <li> <a href="/brand">Brand </a></li>
+                                <li> <a href="/product">Product</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="copyright">
-            <div class="container">
-                <p>© 2019 All Rights Reserved. Design By<a href="https://html.design/"> Free Html Templates</a></p>
             </div>
         </div>
     </div>

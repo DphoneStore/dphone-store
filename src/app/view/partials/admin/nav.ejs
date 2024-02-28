@@ -1,4 +1,4 @@
-<% function NavActivated(title, activated){
+<% function NavActivated(title){
     return title === page_info.title ? "active" : ""
 } %>
 
@@ -9,11 +9,12 @@
         </a>
         <div class="navbar-nav w-100">
             <a href="/admin/dashboard" class="nav-item nav-link <%= NavActivated('Dashboard') %>"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
-            <a href="/admin/order" class="nav-item nav-link <%= NavActivated('Order') %>"><i class="fa-solid fa-inbox me-2"></i>Order</a>
+            <a href="/admin/order/ORDER" class="nav-item nav-link <%= NavActivated('Order') %>"><i class="fa-solid fa-inbox me-2"></i>Order</a>
             <a href="/admin/brand" class="nav-item nav-link <%= NavActivated('Brand') %>"><i class="fa-brands fa-servicestack me-2"></i>Brand</a>
             <a href="/admin/product" class="nav-item nav-link <%= NavActivated('Product') %>"><i class="fa-brands fa-product-hunt me-2"></i>Product</a>
             <a href="/admin/message" class="nav-item nav-link <%= NavActivated('Messages') %>"><i class="fa-brands fa-facebook-messenger me-2"></i>Messages</a>
-            <a href="/admin/message" class="nav-item nav-link"><i class="fa-solid fa-right-from-bracket me-2"></i>Logout</a>
+            <a href="/" class="nav-item nav-link"><i class="fas fa-globe me-2"></i>Website</a>
+            <a href="#" class="nav-item nav-link" id="btn_logout"><i class="fa-solid fa-right-from-bracket me-2"></i>Logout</a>
         </div>
     </nav>
 </div>

@@ -1,0 +1,199 @@
+<div class="modal fade" id="product_detail_modal" tabindex="-1" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" style="color: black">Specifications</h1>
+            </div>
+            <div class="modal-body">
+                <h2 class="title-product-detail">Screen</h2>
+                <table class="table table-bordered table-hover table-striped">
+                    <tbody>
+                    <tr>
+                        <th scope="row">Screen size</th>
+                        <td><%= screen.screen_size %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Screen Technical</th>
+                        <td><%= screen.screen_tech %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Screen Resolution</th>
+                        <td><%= screen.screen_resolution %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Scan Frequency</th>
+                        <td><%= screen.scan_frequency %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Screen Type</th>
+                        <td><%= screen.screen_type %></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <h2 class="title-product-detail">Back Camera</h2>
+                <table class="table table-bordered table-hover table-striped">
+                    <tbody>
+                    <tr>
+                        <th scope="row">Back Camera</th>
+                        <td><%= camera.back_camera %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Back Video</th>
+                        <td><%= camera.back_video %></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <h2 class="title-product-detail">Front Camera</h2>
+                <table class="table table-bordered table-hover table-striped">
+                    <tbody>
+                    <tr>
+                        <th scope="row">Front Camera</th>
+                        <td><%= camera.front_camera %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Front Video</th>
+                        <td><%= camera.front_video %></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <h2 class="title-product-detail">Processor & graphics</h2>
+                <table class="table table-bordered table-hover table-striped">
+                    <tbody>
+                    <tr>
+                        <th scope="row">Chipset</th>
+                        <td><%= processor_graphics.chipset %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">CPU Type</th>
+                        <td><%= processor_graphics.cpu %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">GPU</th>
+                        <td><%= processor_graphics.gpu %></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <h2 class="title-product-detail">RAM & Storage</h2>
+                <table class="table table-bordered table-hover table-striped">
+                    <tbody>
+                    <tr>
+                        <th scope="row">RAM Capacity</th>
+                        <td><%= ram_storage.ram %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Internal Memory</th>
+                        <td><%= ram_storage.internal_memory %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Memory Card Slot</th>
+                        <td><%= ram_storage.memory_card_slot %></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <h2 class="title-product-detail">Battery & charging technology</h2>
+                <table class="table table-bordered table-hover table-striped">
+                    <tbody>
+                    <tr>
+                        <th scope="row">Pin</th>
+                        <td><%= battery.pin %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Charging Technology</th>
+                        <td><%= battery.charging_tech %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Charging Port</th>
+                        <td><%= battery.charging_port %></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <h2 class="title-product-detail">Communicate & Connect</h2>
+                <table class="table table-bordered table-hover table-striped">
+                    <tbody>
+                    <tr>
+                        <th scope="row">SIM Card</th>
+                        <td><%= communicate_connect.sim %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Operating System</th>
+                        <td><%= communicate_connect.operating %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Infrared</th>
+                        <td><%= communicate_connect.infrared %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Headphone jack 3.5</th>
+                        <td><%= communicate_connect.headphone_jack %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Network support</th>
+                        <td><%= communicate_connect.network_support %>td>
+                    </tr>
+                    <tr>
+                        <th scope="row">NFC Technology</th>
+                        <td><%= communicate_connect.nfc_tech %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Wi-Fi</th>
+                        <td><%= communicate_connect.wifi %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Bluetooth</th>
+                        <td><%= communicate_connect.bluetooth %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">GPS</th>
+                        <td><%= communicate_connect.gps %></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <h2 class="title-product-detail">Design & Weight</h2>
+                <table class="table table-bordered table-hover table-striped">
+                    <tbody>
+                    <tr>
+                        <th scope="row">Size</th>
+                        <td><%= design_weight.size %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Weight</th>
+                        <td><%= design_weight.weight %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Back material</th>
+                        <td><%= design_weight.back_material %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Frame material</th>
+                        <td><%= design_weight.frame_material %></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <h2 class="title-product-detail">Other Utilities</h2>
+                <table class="table table-bordered table-hover table-striped">
+                    <tbody>
+                    <tr>
+                        <th scope="row">Audio technology</th>
+                        <td><%= other.audio_tech %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Fingerprint Sensor</th>
+                        <td><%= other.finger_sensor %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Types of sensors</th>
+                        <td><%= other.types_of_sensors %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Special Features</th>
+                        <td><%= other.special_feature %></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

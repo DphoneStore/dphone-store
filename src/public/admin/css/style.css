@@ -16,6 +16,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     border-width: thin;
 }
 
+.modal-content{
+    background-color: rgb(24, 26, 27);
+}
+
 .dropzone .dz-preview.dz-image-preview {
     background: none!important;
 }

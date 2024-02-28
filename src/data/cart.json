@@ -1,0 +1,12 @@
+[
+  {
+    "user": "",
+    "date": "",
+    "total_price": 0,
+    "paid": false
+  },
+  {
+    "cart": {},
+    "products": [{}]
+  }
+]

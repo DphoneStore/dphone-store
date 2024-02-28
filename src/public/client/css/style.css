@@ -26,11 +26,28 @@
 @import url(nice-select.css);
 
 /*--------------------------------------------------------------------- skeleton ---------------------------------------------------------------------*/
+input[type="date"]::-webkit-calendar-picker-indicator {
+     color: rgba(0, 0, 0, 0);
+     opacity: 1;
+     display: block;
+     background: url("/assets/media/decoration/calandar.svg") no-repeat;
+     width: 20px;
+     height: 20px;
+     border-width: thin;
+}
+
+.hidden {
+     display: none!important;
+}
+
 .nav-hover:hover a{
      color: black!important;
      font-weight: bold!important;
 }
 
+.title-product-detail {
+     color: rgb(247, 89, 91);
+}
 
 
 .loader_bg {

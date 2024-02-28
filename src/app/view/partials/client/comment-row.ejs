@@ -1,0 +1,33 @@
+<% comment_list.map(comment => { %>
+    <div class="testimonial-box">
+        <div class="box-top">
+            <div class="profile">
+                <div class="profile-img">
+                    <img src="/assets/media/avatar/<%= comment.user.avatar %>"/>
+                </div>
+                <div class="name-user">
+                    <strong><%= comment.user.full_name %></strong>
+                    <span>
+                    <%= [
+                        comment.createdAt.getDate(),
+                        comment.createdAt.getMonth() + 1,
+                        comment.createdAt.getFullYear()
+                    ].join('-') %>
+                </span>
+                </div>
+            </div>
+            <div class="reviews">
+                <div class="rate-box">
+                    <% let count_star = 5
+                            while(count_star){ %>
+                        <input type="radio" <%= comment.star === count_star ? 'checked' : '' %> >
+                        <label class="star"></label>
+                    <% count_star--} %>
+                </div>
+            </div>
+        </div>
+        <div class="client-comment">
+            <p><%= comment.content %></p>
+        </div>
+    </div>
+<% }) %>

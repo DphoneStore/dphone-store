@@ -1,0 +1,261 @@
+<%- include('../partials/client/confirm-modal') %>
+<main class="page <%= data.detail.length > 0 ? 'hidden' : ''%>" id="empty_cart_container" style="margin-top: 6rem;min-height: 26rem;"  >
+    <section class="shopping-cart">
+        <div class="container">
+            <div class="content">
+                <div class="row">
+                    <div class="col-md-12 col-lg-12" style="text-align: center;">
+                        <img id="thumb_empty_cart" src="/assets/media/decoration/empty-cart.svg" alt="empty" width="50%">
+                        <h2 style="text-align: center; margin-top: 2rem" id="title_empty_cart">Empty cart</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<%- include('../partials/client/confirm-modal') %>
+<main class="page <%= data.detail.length > 0 ? '' : 'hidden' %>" id="cart_container" style="margin-top: 6rem"  >
+    <section class="shopping-cart">
+        <div class="container">
+            <div class="content">
+                <div class="row">
+                    <div class="col-md-12 col-lg-8">
+                        <div class="items">
+                            <%
+                            let total_price = 0;
+                            const details = data.detail
+                            details.map(detail => {
+                            %>
+                                <div class="product" id="<%= detail._id %>">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <img class="img-fluid mx-auto d-block image"
+                                                 src="/assets/media/product/<%= detail.product.images ? detail.product.images[0].filename : '' %>">
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div class="info">
+                                                <div class="row">
+                                                    <div class="col-md-4 product-name">
+                                                        <div class="product-name">
+                                                            <a href="#"><%= detail.product.name %> </a>
+                                                            <div class="product-info">
+                                                                <div>RAM: <span
+                                                                            class="value"><%= detail.product.ram_storage.ram %></span>
+                                                                </div>
+                                                                <div>Memory: <span
+                                                                            class="value"><%= detail.product.ram_storage.internal_memory %></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 price">
+                                                        <%
+                                                            let discount_price = null
+                                                        if(detail.product.is_discount)
+                                                        {
+                                                            discount_price = detail.product.price - (detail.product.price * (detail.product.discount / 100))
+                                                            total_price += discount_price * detail.quantity
+                                                        %>
+                                                        <p class="last-price"><span
+                                                                    style="font-size: larger;color: gray;text-decoration: line-through;">$<%= detail.product.price %></span>
+                                                        </p>
+                                                        <p class="new-price">
+                                                            <span style="font-size: larger;color: red">$<%= discount_price %> (<%= detail.product.discount %>%)</span>
+                                                        </p>
+                                                        <% } else
+                                                        {
+                                                            total_price += detail.product.price * detail.quantity
+                                                        %>
+                                                        <p class="new-price">
+                                                            <span style="font-size: larger;color: red">$<%= detail.product.price %></span>
+                                                        </p>
+                                                        <% } %>
+                                                    </div>
+                                                    <div class="col-md-3 quantity">
+                                                        <label for="quantity">Quantity</label>
+                                                        <input data-cart-detail-id="<%= detail._id %>"
+                                                               data-price="<%= discount_price ? discount_price : detail.product.price %>"
+                                                               type="number"
+                                                               value="<%= detail.quantity %>"
+                                                               class="form-control quantity-input product-quantity">
+                                                    </div>
+                                                    <div class="col-md-2 quantity" style="align-self: center;">
+                                                        <a href="#"
+                                                           class="btn-delete-product"
+                                                           data-cart-detail-id="<%= detail._id %>"><i
+                                                                    class="fas fa-trash red"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% }) %>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-lg-4">
+                        <div class="summary">
+                            <h3>Summary</h3>
+                            <div class="summary-item">
+                                <span class="text">Full Name</span>
+                                <span class="price"><%= data.user.full_name %></span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="text">Email</span>
+                                <span class="price"><%= data.user.email %></span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="text">Phone</span>
+                                <span class="price"><%= data.user.phone %></span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="text">Address</span>
+                                <span class="price"><%= data.user.address %></span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="text">Total</span>
+                                <span class="price" style="color: rgb(235, 22, 22);font-weight: bold"
+                                      id="total_price">$<%= total_price %></span>
+                            </div>
+                            <button style="background-color: rgb(235, 22, 22)" type="button" id="btn_check_out"
+                                    class="btn btn-danger btn-lg btn-block">Checkout
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<%- contentFor('script') %>
+<script src="/assets/js/admin/alert.js"></script>
+<script src="/assets/js/debounce.js"></script>
+<script>
+    $(document).ready(function () {
+        let debounce_update_quantity
+        $('.product-quantity').change(function (e) {
+            const product_quantity = $(this).val()
+            if (product_quantity < 1) {
+                $(this).val(1)
+                Alert.Show('warning', 'quantity must be at least one')
+                return
+            }
+
+            if (debounce_update_quantity) {
+                clearTimeout(debounce_update_quantity)
+            }
+            debounce_update_quantity = setTimeout(() => {
+                const cart_detail_id = $(this).data('cart-detail-id')
+                UpdateQuantity(product_quantity, cart_detail_id)
+            }, 1000)
+        })
+    })
+
+    function UpdateQuantity(product_quantity, cart_detail_id) {
+        $.ajax({
+            url: '/cart/update-quantity',
+            type: 'post',
+            data: {product_quantity, cart_detail_id},
+            beforeSend: LoadingWrapper(true),
+            success: function (response) {
+                if (response.code === 202) {
+                    setTimeout(() => {
+                        LoadingWrapper(false)
+                        UpdateTotalPrice()
+                    }, 1500)
+                } else {
+                    setTimeout(() => {
+                        LoadingWrapper(false)
+                        Alert.Show('danger', 'Bad request')
+                    })
+                }
+            },
+            error: function (error) {
+                LoadingWrapper(false)
+                Alert.Show('danger', 'Something went wrong!')
+            }
+        })
+    }
+
+    function UpdateTotalPrice() {
+        let total_price = 0
+        const input_product = $('.product-quantity')
+        for (const input of input_product) {
+            total_price += $(input).data('price') * $(input).val()
+        }
+        if (total_price === 0) {
+            $('#empty_cart_container').removeClass('hidden')
+            $('#cart_container').addClass('hidden')
+            return
+        }
+        $('#total_price').html(`$${total_price}`)
+    }
+
+    let delete_cart_detail_id
+    $('.btn-delete-product').click(function () {
+        delete_cart_detail_id = $(this).data('cart-detail-id')
+        $('#btn_open_confirm_modal').click()
+    })
+
+    $('#btn_ok_delete').click(function () {
+        $('#btn_close_confirm_modal').click()
+        $.ajax({
+            url: '/cart/delete-out-of-cart',
+            type: 'post',
+            data: {delete_cart_detail_id},
+            beforeSend: LoadingWrapper(true),
+            success: function (response) {
+                if (response.code === 202) {
+                    setTimeout(() => {
+                        LoadingWrapper(false)
+                        $(`#${delete_cart_detail_id}`).remove()
+                        UpdateTotalPrice()
+                    }, 1500)
+                } else {
+                    setTimeout(() => {
+                        LoadingWrapper(false)
+                        Alert.Show('danger', 'Bad request')
+                    })
+                }
+            },
+            error: function (error) {
+                LoadingWrapper(false)
+                Alert.Show('danger', 'Something went wrong!')
+            }
+        })
+    })
+
+    $('#btn_check_out').click(function (){
+        $.ajax({
+            url: '/cart/checkout',
+            type: 'post',
+            beforeSend: LoadingWrapper(true),
+            success: function (response) {
+                if (response.code === 202) {
+                    setTimeout(() => {
+                        $('#cart_container').remove()
+                        $('#title_empty_cart').html('Order successful!')
+                        $('#thumb_empty_cart').attr('src','/assets/media/decoration/order-successful.svg' )
+                        $('#empty_cart_container').removeClass('hidden')
+                        LoadingWrapper(false)
+                    }, 1500)
+                } else {
+                    setTimeout(() => {
+                        LoadingWrapper(false)
+                        Alert.Show('danger', 'Bad request')
+                    })
+                }
+            },
+            error: function (error) {
+                LoadingWrapper(false)
+                Alert.Show('danger', 'Something went wrong!')
+            }
+        })
+    })
+
+</script>
+
+<%- contentFor('style') %>
+<link rel="stylesheet" href="/assets/css/client/cart.css">
+<link rel="stylesheet" href="/assets/css/alert.css">
