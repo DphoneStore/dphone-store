@@ -22,6 +22,13 @@ const ProductRepository = {
     },
     ProductListFollowBrand(column, brand){
         const brand_object_ids = brand.map(id => new Types.ObjectId(id));
+        if(brand_object_ids.length === 0){
+            return Product.find({deleted:false})
+                .select(column)
+                .populate('brand')
+                .sort({release_date: 'desc'})
+                .lean();
+        }
         return Product.find({brand: {$in: brand_object_ids}, deleted:false})
             .select(column)
             .populate('brand')

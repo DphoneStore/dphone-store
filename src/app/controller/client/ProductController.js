@@ -30,6 +30,8 @@ const ProductController = {
         )
     },
     ProductFilterBrand: async (req, res) => {
+        console.log(req.query)
+
         const brand_selected = JSON.parse(req.query.brand_selected)
         const column = '_id name price rating discount is_discount images'
         const product_list = await ProductRepository.ProductListFollowBrand(column, brand_selected)

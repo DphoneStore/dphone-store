@@ -9,7 +9,7 @@
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+    <link href="/assets/media/decoration/smartphone.svg" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -61,7 +61,7 @@
                         <div class="d-flex align-items-center justify-content-between mb-4">
                             <div class="form-check">
                             </div>
-                            <a href="/security/forgot-pass">Forgot Password?</a>
+                            <a href="#" id="btn_forgot_pass">Forgot Password?</a>
                         </div>
                         <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Sign In</button>
                     </form>
@@ -70,11 +70,35 @@
             </div>
         </div>
     </div>
-    <!-- Sign In End -->
+    <button type="button" hidden class="btn btn-primary" id="btn_open_reset_pass_modal" data-toggle="modal" data-target="#reset_pass_modal">
+    </button>
+    <div class="modal fade" id="reset_pass_modal" tabindex="-1" role="dialog">
+        <form id="reset_pass_form">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirm Reset Password</h5>
+                </div>
+                <div class="modal-body">
+                    <label for="" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="input_email_reset">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Reset</button>
+                    <button type="button" class="btn btn-secondary" id="btn_close_reset_pass_modal" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+
+        </div>
+        </form>
+    </div>
 </div>
 
 <!-- JavaScript Libraries -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/admin/lib/easing/easing.min.js"></script>
 <script src="/assets/js/admin/alert.js"></script>
@@ -92,21 +116,55 @@
             beforeSend: LoadingWrapper(true),
             data: {email, password},
             success: function (response) {
-                if (response.code === 200) {
-                    document.cookie = `user_token=${response.token}; path=/`
-                    setTimeout(() => {
-                        location.href = '/'
-                        LoadingWrapper(false)
-                    }, 1500)
-                } else {
-                    setTimeout(() => {
+                setTimeout(() => {
+                    if (response.code === 200) {
+                        document.cookie = `user_token=${response.token}; path=/`
+                        if(response.role === 'admin'){
+                            location.href = '/admin/dashboard'
+                        } else {
+                            location.href = '/'
+                        }
+                    } else {
                         Alert.Show('warning', 'email or password is wrong!')
-                        LoadingWrapper(false)
-                    }, 1500)
-                }
+                    }
+                    LoadingWrapper(false)
+                }, 1500)
+
             },
             error: function (error) {
-                Alert.Show('success', 'login fail, something went wrong!')
+                Alert.Show('danger', 'login fail, something went wrong!')
+                LoadingWrapper(false)
+            }
+        })
+    })
+
+    $('#btn_forgot_pass').click(function (){
+        console.log('cl')
+        $('#btn_open_reset_pass_modal').click()
+    })
+    $('#reset_pass_form').submit(function (e){
+        e.preventDefault()
+        const email = $('#input_email_reset').val()
+
+        $.ajax({
+            url: '/security/request-forgot-password',
+            type: 'post',
+            dataType: 'json',
+            beforeSend: LoadingWrapper(true),
+            data: {email},
+            success: function (response) {
+                setTimeout(() => {
+                    if (response.code === 200) {
+                        Alert.Show('success', 'check in your mail to reset password')
+                        $('#btn_close_reset_pass_modal').click()
+                    } else {
+                        Alert.Show('warning', 'email or password is wrong!')
+                    }
+                    LoadingWrapper(false)
+                }, 1500)
+            },
+            error: function (error) {
+                Alert.Show('danger', 'login fail, something went wrong!')
                 LoadingWrapper(false)
             }
         })

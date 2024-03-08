@@ -1,0 +1,14 @@
+<a href="#"
+   class="nav-item nav-link user-chat"
+   data-chat-id="<%= chat._id %>"
+   data-user-id="<%= chat.customer._id %>"
+   data-user-avatar="<%= chat.customer.avatar %>"
+   data-user-full-name="<%= chat.customer.full_name %>" style="position: relative">
+    <i style="vertical-align: middle;" class="me-2">
+        <img src="/assets/media/avatar/<%= chat.customer.avatar %>"
+             alt="avatar" style="width: 100%;">
+    </i>
+    <span id="has_mess_user_id_<%= chat.customer._id %>" style="transform: translate(-2rem, 1rem) !important;" class="visually-hidden position-absolute top-0 start-100 translate-middle p-2 bg-success border border-light rounded-circle">
+  </span>
+    <div class="d-inline-block"><%= chat.customer.full_name %></div>
+</a>

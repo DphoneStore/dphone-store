@@ -11,5 +11,9 @@ route.post('/register', SecurityController.Register)
 
 route.get('/unauthorized', SecurityController.Unauthorized)
 
+route.post('/request-forgot-password', SecurityController.CreateForgotPass)
+route.get('/reset-pass/:token', SecurityController.ResetPassPage)
+route.put('/update-pass', SecurityController.UpdatePasswordPage)
+
 
 module.exports = route

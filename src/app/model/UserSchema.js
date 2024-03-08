@@ -10,7 +10,7 @@ const UserSchema = new Schema({
     birth_date: {type: String, required: true},
     avatar:  {type: String, default: 'user.svg'},
     address: {type: String, required: true},
-    role: {type: String, default: 'customer'},
+    role: {type: String, default: 'customer'}
 }, {timestamps: true})
 
 module.exports = UserSchema

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Reset Password</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="/assets/media/decoration/smartphone.svg" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Roboto:wght@500;700&display=swap"
+          rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link href="/admin/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet"/>
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/admin/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="/admin/css/style.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="/assets/css/loading.css">
+
+    <link rel="stylesheet" href="/assets/css/loading.css">
+    <link rel="stylesheet" href="/assets/css/alert.css">
+</head>
+<body>
+<div class="container-fluid position-relative d-flex p-0">
+    <%- include('../partials/client/loading') %>
+    <div class="container-fluid">
+        <div class="row h-100 align-items-center justify-content-center" style="min-height: 100vh;">
+            <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
+                <div class="bg-secondary rounded p-4 p-sm-5 my-4 mx-3">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <a href="/" class="">
+                            <h3 class="text-primary"><i class="fa fa-user-edit me-2"></i>DPhone</h3>
+                        </a>
+                        <h3>Reset Password</h3>
+                    </div>
+                    <form id="update_pass_form">
+                        <input type="hidden" id="token" value="<%= token %>">
+                        <div class="form-floating mb-4">
+                            <input type="password" class="form-control" id="password" placeholder="Password"
+                                   required>
+                            <label for="password">Password</label>
+                        </div>
+                        <div class="form-floating mb-4">
+                            <input type="password" class="form-control" id="confirm_password" placeholder="Password"
+                                   required>
+                            <label for="password">Confirm Password</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Update</button>
+                    </form>
+                </div>
+                <p class="text-center mb-0"><a href="/security/login">Sign in now</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/admin/lib/easing/easing.min.js"></script>
+<script src="/assets/js/admin/alert.js"></script>
+<script src="/assets/js/admin/loading-wrapper.js"></script>
+<script>
+
+    $('#update_pass_form').submit(function (e){
+        e.preventDefault()
+        const token = $('#token').val()
+        const pass = $('#password').val()
+        const confirm_pass = $('#confirm_password').val()
+
+        if(pass.trim() !== confirm_pass.trim()){
+            Alert.Show('warning', 'Password and Confirm Password not match!')
+            return
+        }
+
+        $.ajax({
+            url: '/security/update-pass',
+            type: 'PUT',
+            dataType: 'json',
+            beforeSend: LoadingWrapper(true),
+            data: {pass, token},
+            success: function (response) {
+                setTimeout(() => {
+                    if (response.code === 200) {
+                        Alert.Show('success', response.message)
+                    } else {
+                        Alert.Show('warning', response.message)
+                    }
+                    LoadingWrapper(false)
+                }, 1500)
+            },
+            error: function (error) {
+                Alert.Show('danger', 'something went wrong!')
+                LoadingWrapper(false)
+            }
+        })
+    })
+</script>
+</body>
+</html>

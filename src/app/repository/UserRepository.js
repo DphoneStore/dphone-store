@@ -2,8 +2,15 @@ const mongoose = require("mongoose");
 
 const UserSchema = require("../model/UserSchema");
 const User = mongoose.model("User", UserSchema);
+const Roles = require('../constant/Role')
 
 const UserRepository = {
+    UpdateByEmail(email, new_pass){
+        return User.updateOne({email}, {password: new_pass})
+    },
+    FindAdmin(){
+        return User.findOne({role: Roles.ADMIN})
+    },
     FindByEmail(email) {
         return User.findOne({email})
     },
