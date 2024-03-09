@@ -151,18 +151,14 @@
             contentType: false,
             beforeSend: LoadingWrapper(true),
             success: function (response) {
-                console.log(response)
-                if (response.code === 202) {
-                    setTimeout(() => {
+                setTimeout(() => {
+                    if (response.code === 202) {
                         Alert.Show('success', 'update success information')
-                        LoadingWrapper(false)
-                    }, 1000)
-                } else {
-                    setTimeout(() => {
+                    } else {
                         Alert.Show('warning', 'Fail update information!')
-                        LoadingWrapper(false)
-                    }, 1000)
-                }
+                    }
+                    LoadingWrapper(false)
+                }, 1000)
             },
             error: function (error) {
                 Alert.Show('danger', 'something went wrong!')
@@ -180,7 +176,7 @@
         dictRemoveFileConfirmation: 'delete this image?'
     };
 
-    Dropzone.confirm = function(question, accepted, rejected) {
+    Dropzone.confirm = function(question, accepted) {
         $('#btn_open_confirm_modal').click()
         new Promise((resolve, reject) => {
             $('#btn_ok_delete').click(function (){
@@ -190,9 +186,9 @@
             $('#confirm_modal').on('hidden.bs.modal', function (){
                 reject()
             })
-
-        }).then(() => {
+        }).then((result) => {
             accepted()
+            $('#btn_ok_delete').unbind();
         }).catch(()=>{
             $('#btn_ok_delete').unbind();
         })
@@ -206,24 +202,24 @@
         myDropzone.emit("addedfile", img);
         myDropzone.emit("thumbnail", img, `/assets/media/website/${img.name}`);
         myDropzone.emit("complete", img);
-        myDropzone.on('removedfile', (file) => {
-            const btn_delete = file.previewElement.querySelector(".dz-remove");
-            if(btn_delete.hasAttribute("img-name")) {
-                const img_name = btn_delete.getAttribute("img-name")
-                DeleteImageSlider(img_name)
-            } else {
-                DeleteImageSlider(file.name)
-            }
-        })
+
+    })
+
+    myDropzone.on('removedfile', (file) => {
+        const btn_delete = file.previewElement.querySelector(".dz-remove");
+        if(btn_delete.hasAttribute("img-name")) {
+            const img_name = btn_delete.getAttribute("img-name")
+            DeleteImageSlider(img_name)
+        } else {
+            DeleteImageSlider(file.name)
+        }
     })
 
     myDropzone.on("success", function(file, response) {
-        console.log(file)
         const file_uploaded = file.previewElement.querySelector("[data-dz-name]")
         const name = response.images[0].name
         file_uploaded.innerHTML = name
         const btn_delete = file.previewElement.querySelector(".dz-remove")
-        console.log(btn_delete)
         btn_delete.setAttribute("img-name", name)
     });
 
@@ -234,27 +230,18 @@
             data: {name},
             beforeSend: LoadingWrapper(true),
             success: function (response) {
-                if (response.code === 203) {
-                    setTimeout(() => {
+                setTimeout(() => {
+                    if (response.code === 203) {
                         Alert.Show('success', 'remove image successfully')
-                        LoadingWrapper(false)
-                    }, 1000)
-                } else if(response.code === 202) {
-                    setTimeout(() => {
+                    } else if(response.code === 202) {
                         Alert.Show('success', 'update slider successfully')
-                        LoadingWrapper(false)
-                    }, 1000)
-                } else if(response.code === 500) {
-                    setTimeout(() => {
+                    } else if(response.code === 500) {
                         Alert.Show('warning', 'something went wrong')
-                        LoadingWrapper(false)
-                    }, 1000)
-                } else {
-                    setTimeout(() => {
+                    } else {
                         Alert.Show('warning', 'remove image fail!')
-                        LoadingWrapper(false)
-                    }, 1000)
-                }
+                    }
+                    LoadingWrapper(false)
+                }, 1000)
             },
             error: function (error) {
                 Alert.Show('danger', 'something went wrong!')

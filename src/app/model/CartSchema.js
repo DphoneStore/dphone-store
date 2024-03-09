@@ -15,8 +15,8 @@ const CartSchema = new Schema({
     phone: {type:String, default: ''},
     total_price: {type:Number, default: 0},
     status: {type: String, default: SHOPPING},
-    order_date: {type: String, default: ''},
-    paid_date: {type: String, default: ''},
+    order_date: {type: Date, required: false},
+    paid_date: {type: Date, required: false},
 }, {timestamps: true})
 
 module.exports = CartSchema

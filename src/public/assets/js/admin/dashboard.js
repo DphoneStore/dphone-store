@@ -25,7 +25,6 @@ $(document).ready(function () {
         success: function (response) {
             setTimeout(() => {
                 if (response.code === 200) {
-                    console.log(response)
                     let best_sale_products_labels = []
                     let best_sale_products_data = []
                     response.best_sale_products.map((product) => {

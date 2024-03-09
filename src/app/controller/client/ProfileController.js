@@ -11,11 +11,12 @@ const ProfileController = {
         const {website} = await WebInfoRepository.GetWebsiteInfo()
 
         const user = await UserRepository.FindByEmail(req.user.email)
-
+        const role = req.user.role
         const page_info = {
             title: 'Profile',
             has_login,
-            website
+            website,
+            role
         }
         const data = {
             user

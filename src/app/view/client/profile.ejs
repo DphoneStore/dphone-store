@@ -14,7 +14,13 @@
                         <form id="avatar_form" hidden enctype="multipart/form-data">
                             <input type="file" id="input_avatar" name="avatar" hidden>
                         </form>
-                        <button class="btn btn-info" id="btn_open_choose_avatar">Change avatar</button>
+                        <button class="btn btn-info" id="btn_open_choose_avatar" style="    width: 100%;">Change avatar</button>
+                        <a href="/admin/dashboard"  <%= page_info.role === 'admin' ? '': 'hidden' %>>
+                        <button class="btn mt-3" id="btn_open_choose_avatar"
+                                style=" background-color: #FF0000;width: 100%;color: white">
+                            Dashboard
+                        </button>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -101,7 +107,6 @@
 </div>
 
 <%- contentFor('script')  %>
-<script src="/assets/js/admin/alert.js"></script>
 <script>
     $('#pass_form').submit(function (e){
         e.preventDefault()
@@ -245,4 +250,3 @@
 
 <%- contentFor('style')  %>
 <link rel="stylesheet" href="/assets/css/client/profile.css">
-<link rel="stylesheet" href="/assets/css/alert.css">

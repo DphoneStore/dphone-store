@@ -6,6 +6,29 @@ const ProductRepository = require("../../repository/ProductRepository");
 const {UPDATED, BAD_REQUEST, SERVER_ERROR, UNAUTHORIZED, NOT_FOUND} = require("../../constant/StatusCode");
 
 const CartController = {
+    async PurchasedCartPage(req, res){
+        const has_login = !!req.cookies.user_token
+        const {website} = await WebInfoRepository.GetWebsiteInfo()
+
+        const purchased_cart = await CartRepository.GetPurchasedCart(req.user.id)
+
+        const page_info = {
+            title: 'Cart',
+            has_login,
+            website
+        }
+        const data = {
+            purchased_cart
+        }
+        res.render(
+            'client/old-cart',
+            {
+                layout: 'layout/client-layout',
+                page_info,
+                data
+            }
+        )
+    },
     async CartPage(req, res) {
         const has_login = !!req.cookies.user_token
         const {website} = await WebInfoRepository.GetWebsiteInfo()
@@ -94,11 +117,6 @@ const CartController = {
         const user = await UserRepository.FindByEmail(req.user.email)
         if (user) {
             let order_date = new Date()
-            order_date = [
-                order_date.getDate(),
-                order_date.getMonth() + 1,
-                order_date.getFullYear()
-            ].join('-')
             await CartRepository.CheckOut(user_id, user.phone, user.address,order_date)
             const cart = {
                 user: user_id,

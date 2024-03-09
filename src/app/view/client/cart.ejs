@@ -1,24 +1,38 @@
 <%- include('../partials/client/confirm-modal') %>
-<main class="page <%= data.detail.length > 0 ? 'hidden' : ''%>" id="empty_cart_container" style="margin-top: 6rem;min-height: 26rem;"  >
-    <section class="shopping-cart">
+<%- include('../partials/client/confirm-checkout-modal') %>
+
+
+<main class="page" style="margin-top: 5rem">
+    <section class="shopping-cart <%= data.detail.length > 0 ? 'hidden' : ''%>" id="empty_cart_container" >
         <div class="container">
             <div class="content">
                 <div class="row">
                     <div class="col-md-12 col-lg-12" style="text-align: center;">
+                        <div style="text-align: end;" class="mb-3">
+                            <button class="btn btn-warning btn-old-cart">
+                                <i class="fas fa-shopping-cart" style="margin-right: .5rem"></i>
+                                Purchased Products
+                            </button>
+                        </div>
+                        <h2 style="text-align: center;padding: .5rem;background-color: #FF0000;color: white"
+                            id="title_empty_cart"
+                            class="rounded">Empty cart</h2>
                         <img id="thumb_empty_cart" src="/assets/media/decoration/empty-cart.svg" alt="empty" width="50%">
-                        <h2 style="text-align: center; margin-top: 2rem" id="title_empty_cart">Empty cart</h2>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-</main>
-<%- include('../partials/client/confirm-modal') %>
-<main class="page <%= data.detail.length > 0 ? '' : 'hidden' %>" id="cart_container" style="margin-top: 6rem"  >
-    <section class="shopping-cart">
+    <section class="shopping-cart <%= data.detail.length > 0 ?  '' : 'hidden'%>"  id="cart_container" >
         <div class="container">
             <div class="content">
                 <div class="row">
+                    <div class="col-md-12 col-lg-12 mb-3" style="text-align: end">
+                        <button class="btn btn-warning btn-old-cart">
+                            <i class="fas fa-shopping-cart " style="margin-right: .5rem"></i>
+                            Purchased Products
+                        </button>
+                    </div>
                     <div class="col-md-12 col-lg-8">
                         <div class="items">
                             <%
@@ -129,8 +143,6 @@
 </main>
 
 <%- contentFor('script') %>
-<script src="/assets/js/admin/alert.js"></script>
-<script src="/assets/js/debounce.js"></script>
 <script>
     $(document).ready(function () {
         let debounce_update_quantity
@@ -227,25 +239,28 @@
     })
 
     $('#btn_check_out').click(function (){
+        $('#btn_open_confirm_checkout_modal').click()
+    })
+
+    $('#btn_ok_checkout').click(function (){
         $.ajax({
             url: '/cart/checkout',
             type: 'post',
             beforeSend: LoadingWrapper(true),
             success: function (response) {
-                if (response.code === 202) {
-                    setTimeout(() => {
+                setTimeout(() => {
+                    if (response.code === 202) {
+                        $('#btn_close_confirm_checkout_modal').click()
                         $('#cart_container').remove()
                         $('#title_empty_cart').html('Order successful!')
                         $('#thumb_empty_cart').attr('src','/assets/media/decoration/order-successful.svg' )
                         $('#empty_cart_container').removeClass('hidden')
-                        LoadingWrapper(false)
-                    }, 1500)
-                } else {
-                    setTimeout(() => {
-                        LoadingWrapper(false)
+                    } else {
                         Alert.Show('danger', 'Bad request')
-                    })
-                }
+                    }
+                    LoadingWrapper(false)
+                }, 1500)
+
             },
             error: function (error) {
                 LoadingWrapper(false)
@@ -254,8 +269,11 @@
         })
     })
 
+    $('.btn-old-cart').click(function (){
+       location.href = '/cart/purchased-cart'
+    })
+
 </script>
 
 <%- contentFor('style') %>
 <link rel="stylesheet" href="/assets/css/client/cart.css">
-<link rel="stylesheet" href="/assets/css/alert.css">

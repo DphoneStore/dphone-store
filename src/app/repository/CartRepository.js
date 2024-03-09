@@ -1,11 +1,23 @@
 const mongoose = require("mongoose");
-
+const Types = mongoose.Types
 
 const CartSchema = require("../model/CartSchema");
-const {SHOPPING, ORDER, PAID} = require("../constant/CartStatus");
+const {SHOPPING, ORDER, PAID, DELIVERY, CANCEL} = require("../constant/CartStatus");
 const Cart = mongoose.model("Cart", CartSchema);
 
 const CartRepository = {
+    GetPurchasedCart(user_id){
+        return Cart.find({user: user_id, status: {$in:[PAID, DELIVERY, ORDER, CANCEL]}})
+            .populate(
+                {
+                    path: 'detail',
+                    populate: 'product'
+                }
+            )
+            .sort({order_date: 'desc'})
+            .lean()
+
+    },
     Create(cart) {
         return Cart.create(cart)
     },

@@ -1,5 +1,5 @@
 const OrderRepository = require('../../repository/OrderRepository')
-const {ORDER} = require("../../constant/CartStatus");
+const {ORDER, DELIVERY} = require("../../constant/CartStatus");
 const {UPDATED} = require("../../constant/StatusCode");
 
 const OrderController = {
@@ -24,10 +24,10 @@ const OrderController = {
     },
     async OrderDetailPage(req, res){
         const order_id = req.params.order_id
-        const order_detail = await OrderRepository.OrderDetail(order_id, ORDER)
-
+        const order_detail = await OrderRepository.OrderDetail(order_id)
+        console.log('order_detail', order_detail)
         const page_info = {
-            title: 'Order Detail'
+            title: 'Order'
         }
         const data = {
             order_detail

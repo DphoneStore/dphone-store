@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const CartSchema = require("../model/CartSchema");
 const {DELIVERY, CANCEL, PAID} = require("../constant/CartStatus");
 const Cart = mongoose.model("Cart", CartSchema);
-const DetailCartRepository = require('../repository/DetailCartRepository')
 
 const OrderRepository = {
     OrderList(status) {
@@ -12,9 +11,8 @@ const OrderRepository = {
             .sort({order_date: 'desc'})
             .lean()
     },
-    OrderDetail(order_id, status) {
+    OrderDetail(order_id) {
         return Cart.findById(order_id)
-            .where({status})
             .select('detail user')
             .populate('user')
             .populate({
@@ -46,22 +44,29 @@ const OrderRepository = {
     },
     OrderToday() {
         let today = new Date()
-        today = [
-            today.getDate(),
-            today.getMonth() + 1,
-            today.getFullYear()
-        ].join('-')
-        return Cart.countDocuments({order_date: today})
+        today.setHours(0, 0, 0, 0);
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1);
+        return Cart.countDocuments(
+            {
+                order_date: {
+                    $gte: today,
+                    $lt: tomorrow
+                },
+                status: PAID
+            }
+        )
     },
     async RevenueToday() {
-        let date = new Date()
-        let today = [
-            date.getDate(),
-            date.getMonth() + 1,
-            date.getFullYear()
-        ].join('-')
+        let today = new Date()
+        today.setHours(0, 0, 0, 0);
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1);
         const paid_orders = await Cart.find({
-            order_date: today,
+            order_date: {
+                $gte: today,
+                $lt: tomorrow
+            },
             status: PAID
         }).populate('detail').lean()
         let today_revenue = 0
@@ -73,17 +78,11 @@ const OrderRepository = {
         return today_revenue
     },
     OrderMonth() {
-        let date = new Date()
-        let start_month = [
-            '01',
-            date.getMonth() + 1,
-            date.getFullYear()
-        ].join('-')
-        let end_month = [
-            '30',
-            date.getMonth() + 1,
-            date.getFullYear()
-        ].join('-')
+        let start_month = new Date()
+        start_month.setDate(1)
+        let end_month = new Date()
+        end_month.setDate(30)
+
         return Cart.countDocuments({
             order_date:
                 {
@@ -94,17 +93,10 @@ const OrderRepository = {
         })
     },
     async RevenueMonth() {
-        let date = new Date()
-        let start_month = [
-            '01',
-            date.getMonth() + 1,
-            date.getFullYear()
-        ].join('-')
-        let end_month = [
-            '30',
-            date.getMonth() + 1,
-            date.getFullYear()
-        ].join('-')
+        let start_month = new Date()
+        start_month.setDate(1)
+        let end_month = new Date()
+        end_month.setDate(30)
         const paid_orders = await Cart.find({
             order_date:
                 {
@@ -121,18 +113,11 @@ const OrderRepository = {
         })
         return month_revenue
     },
-    async BestSaleProductInMonth(){
-        let date = new Date()
-        let start_month = [
-            '01',
-            date.getMonth() + 1,
-            date.getFullYear()
-        ].join('-')
-        let end_month = [
-            '30',
-            date.getMonth() + 1,
-            date.getFullYear()
-        ].join('-')
+    async BestSaleProductInMonth() {
+        let start_month = new Date()
+        start_month.setDate(1)
+        let end_month = new Date()
+        end_month.setDate(30)
         const paid_orders = await Cart.find({
             order_date:
                 {
@@ -160,12 +145,12 @@ const OrderRepository = {
             if (existing_item) {
                 existing_item.quantity += curr.quantity;
             } else {
-                acc.push({ quantity: curr.quantity, name: curr.product.name, id:curr.product._id });
+                acc.push({quantity: curr.quantity, name: curr.product.name, id: curr.product._id});
             }
             return acc;
         }, []);
 
-        products = products.slice(0,5)
+        products = products.slice(0, 5)
         return products
     }
 }

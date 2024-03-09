@@ -16,7 +16,16 @@
     <% order_list.map((order, index) => { %>
         <tr>
             <th scope="row"><%= index + 1 %></th>
-            <td><%= order.order_date %></td>
+            <td>
+                <%
+                      let order_date = [
+                          String(order.order_date.getMonth() + 1).padStart(2, '0'),
+                          String(order.order_date.getDate()).padStart(2, '0'),
+                          order.order_date.getFullYear()
+                      ].join('-')
+                %>
+                <%= order_date %>
+            </td>
             <td><%= order.user.full_name %></td>
             <td><%= order.user.email %></td>
             <td><%= order.user.phone %></td>

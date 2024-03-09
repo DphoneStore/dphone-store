@@ -14,6 +14,7 @@ const DashBoardController = {
         const revenue_today = await OrderRepository.RevenueToday()
         const order_month = await OrderRepository.OrderMonth()
         const revenue_month = await OrderRepository.RevenueMonth()
+
         const page_info = {
             title: 'Dashboard',
         }
@@ -51,9 +52,13 @@ const DashBoardController = {
         }
     },
     UpdateAbout: async (req, res) => {
+
         const about = {
             introduction: req.body.introduction,
-            thumbnail: req.file.filename
+            thumbnail: req.body.current_thumbnail
+        }
+        if (req.file) {
+            about.thumbnail = req.file.filename
         }
         try {
             await WebInfoRepository.UpdateWebInfo({about})
@@ -70,17 +75,17 @@ const DashBoardController = {
     UpdateSlider: async (req, res) => {
         const images = []
         req.files.map((file) => {
-            images.push({name:file.filename, size: file.size})
+            images.push({name: file.filename, size: file.size})
         })
 
         try {
             await WebInfoRepository.PushImagesSlider(images)
-            res.status(200).json({code: UPDATED, images,message: 'Update slider successfully'})
+            res.status(200).json({code: UPDATED, images, message: 'Update slider successfully'})
         } catch (error) {
             res.status(200).json({code: SERVER_ERROR, message: 'Something went wrong'})
         }
     },
-    DeleteImage: async (req, res)=>{
+    DeleteImage: async (req, res) => {
         if (req.body.name) {
             await WebInfoRepository.PullImageSlider(req.body.name)
             FileUtil.DeleteFile(WEBSITE_STORAGE_PATH, req.body.name)
@@ -92,7 +97,7 @@ const DashBoardController = {
     Chart: async (req, res) => {
         const best_sale_products = await OrderRepository.BestSaleProductInMonth()
         const traffic_web_report = await TrafficWebRepository.TrafficReport()
-        return res.status(200).json({code:200, best_sale_products, traffic_web_report})
+        return res.status(200).json({code: 200, best_sale_products, traffic_web_report})
     }
 }
 

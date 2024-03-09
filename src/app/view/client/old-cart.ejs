@@ -1,0 +1,112 @@
+<main class="page" style="margin-top: 5rem">
+    <section class="shopping-cart" id="cart_container">
+        <div class="container">
+            <div class="content">
+                <div class="row">
+                    <div class="col-md-12 col-lg-12">
+                        <% data.purchased_cart.map(chart => { %>
+                            <div style="padding: 1rem;text-align: end">
+                                <%
+                                    let order_date = [
+                                        String(chart.order_date.getMonth() + 1).padStart(2, '0'),
+                                        String(chart.order_date.getDate()).padStart(2, '0'),
+                                        chart.order_date.getFullYear()
+                                    ].join('-')
+                                %>
+                                <h3>Order date: <%= order_date %></h3>
+                                <%
+                                    let bg_color = ''
+                                    if(chart.status === 'CANCEL'){
+                                        bg_color = 'bg-danger text-white'
+                                    } else if(chart.status === 'PAID'){
+                                        bg_color = 'bg-success text-white'
+                                    }else if(chart.status === 'ORDER'){
+                                        bg_color = 'bg-primary text-white'
+                                    }else if(chart.status === 'DELIVERY'){
+                                        bg_color = 'bg-warning text-black'
+                                    }
+                                %>
+                                <span style="padding: .5rem;" class="<%= bg_color %> rounded">Status: <%= chart.status %></span>
+                            </div>
+                            <div class="items">
+                                <%
+                                    let total_price = 0;
+                                    const details = chart.detail
+                                details.map(detail => {
+                                %>
+                                    <div class="product" id="<%= detail._id %>">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <img class="img-fluid mx-auto d-block image"
+                                                     src="/assets/media/product/<%= detail.product.images ? detail.product.images[0].filename : '' %>">
+                                            </div>
+                                            <div class="col-md-9">
+                                                <div class="info">
+                                                    <div class="row">
+                                                        <div class="col-md-3 product-name">
+                                                            <div class="product-name">
+                                                                <a href="#"><%= detail.product.name %> </a>
+                                                                <div class="product-info">
+                                                                    <div>RAM: <span
+                                                                                class="value"><%= detail.product.ram_storage.ram %></span>
+                                                                    </div>
+                                                                    <div>Memory: <span
+                                                                                class="value"><%= detail.product.ram_storage.internal_memory %></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3 price">
+                                                            <%
+                                                                let discount_price = null
+                                                            if(detail.product.is_discount)
+                                                            {
+                                                                discount_price = detail.product.price - (detail.product.price * (detail.product.discount / 100))
+                                                                total_price += discount_price * detail.quantity
+                                                            %>
+                                                            <p class="last-price"><span
+                                                                        style="font-size: larger;color: gray;text-decoration: line-through;">$<%= detail.product.price %></span>
+                                                            </p>
+                                                            <p class="new-price">
+                                                                <span style="font-size: larger;color: red">$<%= discount_price %> (<%= detail.product.discount %>%)</span>
+                                                            </p>
+                                                            <% } else
+                                                            {
+                                                                total_price += detail.product.price * detail.quantity
+                                                            %>
+                                                            <p class="new-price">
+                                                                <span style="font-size: larger;color: red">$<%= detail.product.price %></span>
+                                                            </p>
+                                                            <% } %>
+                                                        </div>
+                                                        <div class="col-md-3 quantity">
+                                                            <label for="quantity">Quantity</label>
+                                                            <p><%= detail.quantity %></p>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label for="quantity">Total price</label>
+                                                            <p><%= total_price %></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <% }) %>
+                            </div>
+                            <hr style="background-color: red"/>
+                        <% }) %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<%- contentFor('script') %>
+<script>
+
+</script>
+
+<%- contentFor('style') %>
+<link rel="stylesheet" href="/assets/css/client/cart.css">
