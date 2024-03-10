@@ -93,9 +93,9 @@
     position: fixed;
     width: 24rem;
     height: 36rem;
+    right: 0;
     transform: translateY(36rem);
     z-index: 2;
-    right: 39px;
     bottom: 62px;
     box-sizing: border-box;
     border-radius: 1rem;

@@ -4,8 +4,8 @@ I. admin UI
     3. product: @done
     4. search box: @done
     5. dashboard: @done
-    5. order:
-    5. order detail:
+    5. order: @done
+    5. order detail: @done
 
 II. customer UI
     1. brand: done@
@@ -20,13 +20,15 @@ II. customer UI
     8. Reviews & comments: @done
     9. check out: @done
     10. order: @done
-    11. order detail ################# UI
+    11. order detail: @done
+    12. old order: @done
+
 II function:
     1. CRUD brand: @done
     2. CRUD product: @done
     3. search product: @done
     4. CRUD web information: @done
-    5. security: @done
+    5. login: @done
     7. product list: @done
     8. product list follow brand: @done
     9. product search: @done
@@ -34,9 +36,14 @@ II function:
     11. Reviews & comments: @done
     12. cart: @done
     13. profile: @done
-    14. order:
-    15. dashboard:
-    16. message:
-    17. forget pass:
-    12. old cart:
-    6. chart & revenue:
+    14. order: @done
+    15. dashboard: @done
+    16. message client: @done
+    18. message admin: @done
+    19. forget pass: @done
+    20. old cart: @done
+    21. chart & revenue: @done
+    22. register: done@
+    23. filter order: @done
+    24. slider: @done
+    25. responsive all screen: @done

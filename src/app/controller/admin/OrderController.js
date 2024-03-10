@@ -25,7 +25,6 @@ const OrderController = {
     async OrderDetailPage(req, res){
         const order_id = req.params.order_id
         const order_detail = await OrderRepository.OrderDetail(order_id)
-        console.log('order_detail', order_detail)
         const page_info = {
             title: 'Order'
         }

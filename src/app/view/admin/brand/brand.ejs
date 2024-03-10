@@ -15,60 +15,62 @@
                 </div>
             </div>
             <div class="bg-secondary rounded h-100 p-4 mt-3">
-                <% if(data.brand_list.length > 0 ){ %>
+                <div class="table-responsive ">
+                    <% if(data.brand_list.length > 0 ){ %>
 
-                    <table class="table table-hover" style="text-align: center;">
-                        <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Brand Name</th>
-                            <th scope="col">Logo</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <%- include('../../partials/admin/brand-row', {brand_list: data.brand_list}) %>
-                        </tbody>
-                    </table>
-                <% } else { %>
-                    <%- include('../../partials/admin/blank', {content: 'There are no brands yet!, click on new button to add a new brand'}) %>
-                <% } %>
+                        <table class="table table-hover" style="text-align: center;">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Brand Name</th>
+                                <th scope="col">Logo</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <%- include('../../partials/admin/brand-row', {brand_list: data.brand_list}) %>
+                            </tbody>
+                        </table>
+                    <% } else { %>
+                        <%- include('../../partials/admin/blank', {content: 'There are no brands yet!, click on new button to add a new brand'}) %>
+                    <% } %>
+                </div>
             </div>
         </div>
     </div>
 </div>
 <%- contentFor('script') %>
 <script>
-    $('.btn-edit-brand').click(function (){
+    $('.btn-edit-brand').click(function () {
         const brand_id = $(this).data('brand-id')
         location.href = `/admin/brand/edit/${brand_id}`
     })
 
     let brand_id_delete = 0
-    $('.btn-delete-brand').click(function (){
+    $('.btn-delete-brand').click(function () {
         brand_id_delete = $(this).data('brand-id')
         $('#btn_open_confirm_modal').click()
     })
 
-    $('#btn_ok_delete').click(function (){
+    $('#btn_ok_delete').click(function () {
         $('#btn_close_confirm_modal').click()
         $.ajax({
             url: '/admin/brand/delete',
             type: 'delete',
-            data: {brand_id:brand_id_delete},
+            data: {brand_id: brand_id_delete},
             dataType: 'json',
             beforeSend: LoadingWrapper(true),
-            success: (data)=>{
-                if(data.code === 203){
-                    setTimeout(()=>{
+            success: (data) => {
+                if (data.code === 203) {
+                    setTimeout(() => {
                         location.href = '/admin/brand'
-                    },1000)
+                    }, 1000)
                 } else {
                     alert('something went wrong!')
                     LoadingWrapper(false)
                 }
             },
-            error: (error)=>{
+            error: (error) => {
                 LoadingWrapper(false)
                 alert(error)
             }
