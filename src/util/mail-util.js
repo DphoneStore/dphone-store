@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
-const EMAIL_KEY = 'dphone.store123@gmail.com'
-const EMAIL_APP_PASSWORD = 'lvzpsyboudrvwkex'
+const EMAIL_KEY = ''
+const EMAIL_APP_PASSWORD = ''
 
 let transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
